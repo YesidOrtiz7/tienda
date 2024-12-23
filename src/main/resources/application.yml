@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: tienda
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    initialize: true
+    #data: classpath:data.sql
+    #schema: classpath:schema.sql
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/tienda
+    username: root
+    password:
+  jpa:
+    hibernate.ddl-auto: update
+    generate-ddl: true
+    show-sql: true
