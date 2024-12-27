@@ -3,13 +3,14 @@ package com.tienda.usuarios.dominio;
 public class Usuario {
     private int id;
     private String documento;
-    private String primerNombre;
-    private String segundoNombre;
-    private String primerApellido;
-    private String segundoApellido;
+    private String correo;
+    private String nombres;
+    private String apellidos;
+    private String telefono;
     private String contrasena;
     private String totpSecret;
-    private boolean habilitado;
+    private boolean bloqueado;
+    private boolean eliminado;
     private int saldoEnCuenta;
 
 
@@ -32,36 +33,28 @@ public class Usuario {
         this.documento = documento;
     }
 
-    public String getPrimerNombre() {
-        return primerNombre;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setPrimerNombre(String primerNombre) {
-        this.primerNombre = primerNombre;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
-    public String getSegundoNombre() {
-        return segundoNombre;
+    public String getNombres() {
+        return nombres;
     }
 
-    public void setSegundoNombre(String segundoNombre) {
-        this.segundoNombre = segundoNombre;
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
     }
 
-    public String getPrimerApellido() {
-        return primerApellido;
+    public String getApellidos() {
+        return apellidos;
     }
 
-    public void setPrimerApellido(String primerApellido) {
-        this.primerApellido = primerApellido;
-    }
-
-    public String getSegundoApellido() {
-        return segundoApellido;
-    }
-
-    public void setSegundoApellido(String segundoApellido) {
-        this.segundoApellido = segundoApellido;
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
     public String getContrasena() {
@@ -72,12 +65,12 @@ public class Usuario {
         this.contrasena = contrasena;
     }
 
-    public boolean isHabilitado() {
-        return habilitado;
+    public boolean isBloqueado() {
+        return bloqueado;
     }
 
-    public void setHabilitado(boolean habilitado) {
-        this.habilitado = habilitado;
+    public void setBloqueado(boolean bloqueado) {
+        this.bloqueado = bloqueado;
     }
 
     public int getSaldoEnCuenta() {
@@ -94,5 +87,21 @@ public class Usuario {
 
     public void setTotpSecret(String totpSecret) {
         this.totpSecret = totpSecret;
+    }
+
+    public boolean isEliminado() {
+        return eliminado;
+    }
+
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 }

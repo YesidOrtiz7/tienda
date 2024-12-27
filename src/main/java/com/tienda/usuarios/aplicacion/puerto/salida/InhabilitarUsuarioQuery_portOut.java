@@ -12,11 +12,11 @@ import org.springframework.stereotype.Repository;
 public interface InhabilitarUsuarioQuery_portOut extends JpaRepository<UsuarioPersistenceModel,Integer> {
     @Modifying
     @Transactional
-    @Query("UPDATE UsuarioPersistenceModel u SET u.habilitado = false WHERE u.id = :id")
+    @Query("UPDATE UsuarioPersistenceModel u SET u.bloqueado = true WHERE u.id = :id")
     int bloquear(@Param("id") int id);
 
     @Modifying
     @Transactional
-    @Query("UPDATE UsuarioPersistenceModel u SET u.habilitado = true WHERE u.id = :id")
+    @Query("UPDATE UsuarioPersistenceModel u SET u.bloqueado = false WHERE u.id = :id")
     int desbloquear(@Param("id") int id);
 }

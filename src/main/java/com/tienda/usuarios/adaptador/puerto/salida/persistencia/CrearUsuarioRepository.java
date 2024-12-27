@@ -35,6 +35,11 @@ public class CrearUsuarioRepository implements PuertoCrearUsuario {
         if (usuario.getContrasena().length()<8){
             throw new InvalidInputException("La contraseña debe tener almenos 8 caracteres");
         }
+        if (usuario.getCorreo().isBlank()){
+            throw new InvalidInputException("El campo de correo esta vacio");
+        }
+        usuario.setBloqueado(false);
+        usuario.setEliminado(false);
         String passwordEncode= this.passwordEncoder.encode(usuario.getContrasena());
         usuario.setContrasena(passwordEncode);
 

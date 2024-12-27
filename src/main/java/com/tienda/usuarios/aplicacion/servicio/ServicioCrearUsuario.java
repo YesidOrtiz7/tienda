@@ -14,6 +14,7 @@ public class ServicioCrearUsuario implements CasoUsoCrearUsuario {
     private PuertoCrearUsuario repository;
     private final String regexContrasena = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[\\-/*@#$%^&+=!])\\S{8,}$";
     private final String regexNombre="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$";
+    private final String regexCorreo = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
     @Autowired
     public void setRepository(PuertoCrearUsuario repository) {
@@ -22,21 +23,18 @@ public class ServicioCrearUsuario implements CasoUsoCrearUsuario {
 
     @Override
     public String crearUsuario(Usuario usuario) throws InvalidInputException {
-        if (usuario.getPrimerNombre().isEmpty() || !usuario.getPrimerNombre().matches(regexNombre)){
-            throw new InvalidInputException("Solo se permiten letras en el campo primer nombre");
+        if (usuario.getNombres().isBlank() || !usuario.getNombres().matches(regexNombre)){
+            throw new InvalidInputException("Solo se permiten letras en el campo nombres");
         }
-        if (usuario.getSegundoNombre().isBlank()){
-            usuario.setSegundoNombre("");
-        } else if (!usuario.getSegundoNombre().matches(regexNombre)){
-            throw new InvalidInputException("Solo se permiten letras en el campo segundo nombre");
+        if (usuario.getApellidos().isBlank() ||!usuario.getApellidos().matches(regexNombre)){
+            throw new InvalidInputException("Solo se permiten letras en el campo apellidos");
         }
-        if (usuario.getPrimerApellido().isEmpty() ||!usuario.getPrimerApellido().matches(regexNombre)){
-            throw new InvalidInputException("Solo se permiten letras en el campo primer apellido");
+        if (!usuario.getCorreo().matches(regexCorreo)){
+            throw new InvalidInputException("Direccion de correo electronico invalida");
         }
-        if (usuario.getSegundoApellido().isBlank()){
-            usuario.setSegundoApellido("");
-        }else if (!usuario.getSegundoApellido().matches(regexNombre)){
-            throw new InvalidInputException("Solo se permiten letras en el campo segundo apellido");
+        String telefono=usuario.getTelefono().replaceAll("[.,\\s]", "");
+        if (!telefono.matches("^(\\+\\d{1,3})?\\s?\\d{10}$")){
+            throw new InvalidInputException("telefono invalido, ingrese un telefono valido EJ: +52 1234567890");
         }
         String doc= usuario.getDocumento().replaceAll("[.,\\s]", "");
         if (!doc.matches("^\\d+$")){
@@ -51,7 +49,7 @@ public class ServicioCrearUsuario implements CasoUsoCrearUsuario {
                      Contenga al menos un dígito.\
                      Contenga al menos un carácter especial (como @, #, $, %, etc.).""");
         }
-        usuario.setHabilitado(true);
+        usuario.setBloqueado(true);
         usuario.setSaldoEnCuenta(0);
 
         //Generar el secreto TOTP

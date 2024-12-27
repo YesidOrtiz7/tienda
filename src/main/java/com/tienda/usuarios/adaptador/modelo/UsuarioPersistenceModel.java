@@ -14,17 +14,17 @@ public class UsuarioPersistenceModel {
     @Column(nullable = false,length = 12)
     private String documento;
 
-    @Column(nullable = false,length = 60)
-    private String primerNombre;
+    @Column(nullable = false,length = 120)
+    private String correo;
+
+    @Column(nullable = false,length = 120)
+    private String nombres;
+
+    @Column(nullable = false,length = 120)
+    private String apellidos;
 
     @Column(nullable = false,length = 60)
-    private String segundoNombre;
-
-    @Column(nullable = false,length = 60)
-    private String primerApellido;
-
-    @Column(nullable = false,length = 60)
-    private String segundoApellido;
+    private String telefono;
 
     @Column(nullable = false,length = 120)
     private String contrasena;
@@ -33,7 +33,10 @@ public class UsuarioPersistenceModel {
     private String totpSecret;
 
     @Column(nullable = false)
-    private boolean habilitado;
+    private boolean bloqueado;
+
+    @Column(nullable = false)
+    private boolean eliminado;
 
     @Column(nullable = false)
     private int saldoEnCuenta;
@@ -57,36 +60,20 @@ public class UsuarioPersistenceModel {
         this.documento = documento;
     }
 
-    public String getPrimerNombre() {
-        return primerNombre;
+    public String getNombres() {
+        return nombres;
     }
 
-    public void setPrimerNombre(String primerNombre) {
-        this.primerNombre = primerNombre;
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
     }
 
-    public String getSegundoNombre() {
-        return segundoNombre;
+    public String getApellidos() {
+        return apellidos;
     }
 
-    public void setSegundoNombre(String segundoNombre) {
-        this.segundoNombre = segundoNombre;
-    }
-
-    public String getPrimerApellido() {
-        return primerApellido;
-    }
-
-    public void setPrimerApellido(String primerApellido) {
-        this.primerApellido = primerApellido;
-    }
-
-    public String getSegundoApellido() {
-        return segundoApellido;
-    }
-
-    public void setSegundoApellido(String segundoApellido) {
-        this.segundoApellido = segundoApellido;
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
     public String getContrasena() {
@@ -97,12 +84,12 @@ public class UsuarioPersistenceModel {
         this.contrasena = contrasena;
     }
 
-    public boolean isHabilitado() {
-        return habilitado;
+    public boolean isBloqueado() {
+        return bloqueado;
     }
 
-    public void setHabilitado(boolean habilitado) {
-        this.habilitado = habilitado;
+    public void setBloqueado(boolean bloqueado) {
+        this.bloqueado = bloqueado;
     }
 
     public int getSaldoEnCuenta() {
@@ -121,7 +108,31 @@ public class UsuarioPersistenceModel {
         this.totpSecret = totpSecret;
     }
 
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public boolean isEliminado() {
+        return eliminado;
+    }
+
+    public void setEliminado(boolean eliminado) {
+        this.eliminado = eliminado;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
     public String getUserName(){
-        return this.primerNombre+" "+ this.segundoNombre+" "+ this.primerApellido+" "+ this.segundoApellido;
+        return this.nombres+" "+ this.apellidos;
     }
 }

@@ -12,13 +12,14 @@ public interface MapperRepositoryToDomainUsuario {
     @Mappings({
         @Mapping(source = "id",target = "id"),
         @Mapping(source = "documento",target = "documento"),
-        @Mapping(source = "primerNombre",target = "primerNombre"),
-        @Mapping(source = "segundoNombre",target = "segundoNombre"),
-        @Mapping(source = "primerApellido",target = "primerApellido"),
-        @Mapping(source = "segundoApellido",target = "segundoApellido"),
+        @Mapping(source = "correo",target = "correo"),
+        @Mapping(source = "nombres",target = "nombres"),
+        @Mapping(source = "apellidos",target = "apellidos"),
+        @Mapping(source = "telefono",target = "telefono"),
         @Mapping(source = "contrasena",target = "contrasena"),
         @Mapping(source = "totpSecret",target = "totpSecret"),
-        @Mapping(source = "habilitado",target = "habilitado"),
+        @Mapping(source = "bloqueado",target = "bloqueado"),
+        @Mapping(source = "eliminado",target = "eliminado"),
         @Mapping(source = "saldoEnCuenta",target = "saldoEnCuenta"),
     })
     UsuarioPersistenceModel toPersistenceModel(Usuario usuario);

@@ -1,7 +1,6 @@
 package com.tienda.userSecurityService.aplicacion.servicio;
 
 import com.tienda.administracion.adaptador.modelo.AdministradorPersistenceModel;
-import com.tienda.exceptionHandler.excepciones.SearchItemNotFoundException;
 import com.tienda.userSecurityService.aplicacion.puerto.salida.FindAdminByDoc;
 import com.tienda.userSecurityService.aplicacion.puerto.salida.FindUsuarioByDoc;
 import com.tienda.usuarios.adaptador.modelo.UsuarioPersistenceModel;
@@ -33,7 +32,7 @@ public class UserSecurityService implements UserDetailsService {
                     .username(usuario.get().getUserName())
                     .password(usuario.get().getContrasena())
                     .roles("USUARIO")
-                    .accountLocked(!usuario.get().isHabilitado())
+                    .accountLocked(usuario.get().isBloqueado())
                     //.disable()
                     .build();
         }

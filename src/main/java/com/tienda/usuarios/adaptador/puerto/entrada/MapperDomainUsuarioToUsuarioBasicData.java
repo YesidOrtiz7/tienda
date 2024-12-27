@@ -11,10 +11,10 @@ public interface MapperDomainUsuarioToUsuarioBasicData {
     @Mappings({
             @Mapping(source = "id", target = "id"),
             @Mapping(source = "documento", target = "documento"),
-            @Mapping(source = "primerNombre", target = "primerNombre"),
-            @Mapping(source = "segundoNombre", target = "segundoNombre"),
-            @Mapping(source = "primerApellido", target = "primerApellido"),
-            @Mapping(source = "segundoApellido", target = "segundoApellido")
+            @Mapping(source = "correo", target = "correo"),
+            @Mapping(source = "nombres", target = "nombres"),
+            @Mapping(source = "apellidos", target = "apellidos"),
+            @Mapping(source = "telefono", target = "telefono")
     })
     UsuarioBasicData toBasicDataModel(Usuario usuario);
 }

@@ -3,10 +3,10 @@ package com.tienda.usuarios.adaptador.modelo;
 public class UsuarioBasicData {
     private int id;
     private String documento;
-    private String primerNombre;
-    private String segundoNombre;
-    private String primerApellido;
-    private String segundoApellido;
+    private String correo;
+    private String nombres;
+    private String apellidos;
+    private String telefono;
 
     public UsuarioBasicData() {
     }
@@ -27,35 +27,35 @@ public class UsuarioBasicData {
         this.documento = documento;
     }
 
-    public String getPrimerNombre() {
-        return primerNombre;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setPrimerNombre(String primerNombre) {
-        this.primerNombre = primerNombre;
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 
-    public String getSegundoNombre() {
-        return segundoNombre;
+    public String getNombres() {
+        return nombres;
     }
 
-    public void setSegundoNombre(String segundoNombre) {
-        this.segundoNombre = segundoNombre;
+    public void setNombres(String nombres) {
+        this.nombres = nombres;
     }
 
-    public String getPrimerApellido() {
-        return primerApellido;
+    public String getApellidos() {
+        return apellidos;
     }
 
-    public void setPrimerApellido(String primerApellido) {
-        this.primerApellido = primerApellido;
+    public void setApellidos(String apellidos) {
+        this.apellidos = apellidos;
     }
 
-    public String getSegundoApellido() {
-        return segundoApellido;
+    public String getTelefono() {
+        return telefono;
     }
 
-    public void setSegundoApellido(String segundoApellido) {
-        this.segundoApellido = segundoApellido;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 }

@@ -1,6 +1,5 @@
 package com.tienda.usuarios.adaptador.puerto.salida.persistencia;
 
-import com.tienda.exceptionHandler.excepciones.InvalidInputException;
 import com.tienda.usuarios.adaptador.modelo.UsuarioPersistenceModel;
 import com.tienda.usuarios.dominio.Usuario;
 import org.junit.jupiter.api.Assertions;
@@ -8,8 +7,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CrearUsuarioRepositoryTest {
     private Usuario usuarioDomainModel;
@@ -24,23 +21,23 @@ class CrearUsuarioRepositoryTest {
 
         usuarioDomainModel.setId(1);
         usuarioDomainModel.setDocumento("11111111");
-        usuarioDomainModel.setPrimerNombre("Fabian");
-        usuarioDomainModel.setSegundoNombre("");
-        usuarioDomainModel.setPrimerApellido("Ortiz");
-        usuarioDomainModel.setSegundoApellido("");
+        usuarioDomainModel.setNombres("Fabian");
+        usuarioDomainModel.setApellidos("Ortiz");
+        usuarioDomainModel.setCorreo("correo@correo.com");
         usuarioDomainModel.setContrasena("Asdf123+");
-        usuarioDomainModel.setHabilitado(true);
+        usuarioDomainModel.setBloqueado(false);
+        usuarioDomainModel.setEliminado(false);
         usuarioDomainModel.setSaldoEnCuenta(0);
 
         usuarioPersistenceModel=new UsuarioPersistenceModel();
         usuarioPersistenceModel.setId(1);
         usuarioPersistenceModel.setDocumento("1111");
-        usuarioPersistenceModel.setPrimerNombre("Juan");
-        usuarioPersistenceModel.setSegundoNombre("Joaquin");
-        usuarioPersistenceModel.setPrimerApellido("Jimenez");
-        usuarioPersistenceModel.setSegundoApellido("");
+        usuarioPersistenceModel.setNombres("Juan Joaquin");
+        usuarioPersistenceModel.setApellidos("Jimenez");
+        usuarioPersistenceModel.setCorreo("correo@correo.com");
         usuarioPersistenceModel.setContrasena("Asdf123+");
-        usuarioPersistenceModel.setHabilitado(true);
+        usuarioPersistenceModel.setBloqueado(false);
+        usuarioPersistenceModel.setEliminado(false);
         mapper= Mockito.mock(MapperRepositoryToDomainUsuario.class);
         passwordEncoder=Mockito.mock(PasswordEncoder.class);
         interfaceRepository=Mockito.mock(UsuarioCrudRepository.class);

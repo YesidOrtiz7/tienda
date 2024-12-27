@@ -8,8 +8,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class ServicioCrearUsuarioTest {
     private Usuario domainModel;
     private PuertoCrearUsuario repository;
@@ -22,12 +20,12 @@ class ServicioCrearUsuarioTest {
         domainModel=new Usuario();
         domainModel.setId(1);
         domainModel.setDocumento("11111111");
-        domainModel.setPrimerNombre("Fabian");
-        domainModel.setSegundoNombre("");
-        domainModel.setPrimerApellido("Ortiz");
-        domainModel.setSegundoApellido("");
+        domainModel.setNombres("Fabian");
+        domainModel.setApellidos("Ortiz");
+        domainModel.setCorreo("correo@Correo.com");
+        domainModel.setTelefono("123456");
         domainModel.setContrasena("Asdf123+");
-        domainModel.setHabilitado(true);
+        domainModel.setBloqueado(true);
         domainModel.setSaldoEnCuenta(0);
         service.setRepository(repository);
     }
@@ -36,7 +34,9 @@ class ServicioCrearUsuarioTest {
     void crearUsuario() {
         try {
             Mockito.when(repository.crearUsuario(domainModel)).thenReturn(domainModel);
-            Assertions.assertEquals(domainModel,service.crearUsuario(domainModel));
+            String totp=service.crearUsuario(domainModel);
+            System.out.println(totp);
+            Assertions.assertTrue(totp.startsWith("otpauth://totp/"));
             Mockito.verify(repository,Mockito.times(1)).crearUsuario(domainModel);
         } catch (Exception e) {
             Assertions.fail(e);
@@ -46,22 +46,14 @@ class ServicioCrearUsuarioTest {
     void crearUsuario_NombresInvalidos() {
         try {
             Mockito.when(repository.crearUsuario(domainModel)).thenReturn(domainModel);
-            domainModel.setPrimerNombre("1234asdf");
+            domainModel.setNombres("1234asdf");
             Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
-            domainModel.setSegundoNombre("1234asdf");
+            domainModel.setNombres("      ");
             Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
-            domainModel.setPrimerNombre("      ");
-            Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
-            domainModel.setPrimerNombre("");
+            domainModel.setNombres("");
             Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
 
             Mockito.verify(repository,Mockito.times(0)).crearUsuario(domainModel);
-            domainModel.setPrimerNombre("asf");
-
-            domainModel.setSegundoNombre("      ");
-            Assertions.assertDoesNotThrow(()->service.crearUsuario(domainModel));
-            domainModel.setSegundoNombre("");
-            Assertions.assertDoesNotThrow(()->service.crearUsuario(domainModel));
         } catch (Exception e) {
             Assertions.fail(e);
         }
@@ -71,21 +63,62 @@ class ServicioCrearUsuarioTest {
     void crearUsuario_ApellidosInvalidos() {
         try {
             Mockito.when(repository.crearUsuario(domainModel)).thenReturn(domainModel);
-            domainModel.setPrimerApellido("1234asdf");
+
+            domainModel.setApellidos("1234asdf");
             Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
-            domainModel.setSegundoApellido("1234asdf");
+            domainModel.setApellidos("      ");
             Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
-            domainModel.setPrimerApellido("      ");
-            Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
-            domainModel.setPrimerApellido("");
+            domainModel.setApellidos("");
             Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
 
             Mockito.verify(repository,Mockito.times(0)).crearUsuario(domainModel);
-            domainModel.setPrimerApellido("asf");
+        } catch (Exception e) {
+            Assertions.fail(e);
+        }
+    }
+    @Test
+    void crearUsuario_CorreoInvalido() {
+        try {
+            Mockito.when(repository.crearUsuario(domainModel)).thenReturn(domainModel);
+            domainModel.setCorreo("1234asdf");
+            Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
+            domainModel.setCorreo("1234asdf@ju");
+            Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
+            domainModel.setCorreo("1234asdf@asdf.123");
+            Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
+            domainModel.setCorreo("      ");
+            Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
+            domainModel.setCorreo("");
+            Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
 
-            domainModel.setSegundoApellido("      ");
-            Assertions.assertDoesNotThrow(()->service.crearUsuario(domainModel));
-            domainModel.setSegundoApellido("");
+            Mockito.verify(repository,Mockito.times(0)).crearUsuario(domainModel);
+        } catch (Exception e) {
+            Assertions.fail(e);
+        }
+    }
+    @Test
+    void crearUsuario_TelefonoInvalido() {
+        try {
+            Mockito.when(repository.crearUsuario(domainModel)).thenReturn(domainModel);
+
+            domainModel.setTelefono("ABC123");
+            Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
+            domainModel.setTelefono("/#");
+            Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
+            domainModel.setTelefono("");
+            Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
+            domainModel.setTelefono("    ");
+            Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
+            domainModel.setTelefono("1 2 3.4,5");
+            Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
+            domainModel.setTelefono("12.345, 678   ");
+            Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
+            domainModel.setTelefono("+52 123-456-7890");
+            Assertions.assertThrows(InvalidInputException.class,()->service.crearUsuario(domainModel));
+
+            Mockito.verify(repository,Mockito.times(0)).crearUsuario(domainModel);
+
+            domainModel.setTelefono("+52 1234567890");
             Assertions.assertDoesNotThrow(()->service.crearUsuario(domainModel));
         } catch (Exception e) {
             Assertions.fail(e);
