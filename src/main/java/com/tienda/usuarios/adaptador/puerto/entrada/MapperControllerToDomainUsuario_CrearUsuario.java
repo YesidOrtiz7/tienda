@@ -1,6 +1,6 @@
 package com.tienda.usuarios.adaptador.puerto.entrada;
 
-import com.tienda.usuarios.adaptador.modelo.CrearUsuario_ControllerModel;
+import com.tienda.usuarios.adaptador.modelo.controller.CrearUsuario_ControllerModel;
 import com.tienda.usuarios.dominio.Usuario;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;

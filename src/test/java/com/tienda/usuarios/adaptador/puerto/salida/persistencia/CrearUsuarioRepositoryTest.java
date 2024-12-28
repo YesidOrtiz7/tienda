@@ -1,6 +1,6 @@
 package com.tienda.usuarios.adaptador.puerto.salida.persistencia;
 
-import com.tienda.usuarios.adaptador.modelo.UsuarioPersistenceModel;
+import com.tienda.usuarios.adaptador.modelo.persistencia.UsuarioPersistenceModel;
 import com.tienda.usuarios.dominio.Usuario;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

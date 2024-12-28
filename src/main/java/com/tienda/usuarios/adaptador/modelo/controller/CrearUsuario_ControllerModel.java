@@ -1,4 +1,4 @@
-package com.tienda.usuarios.adaptador.modelo;
+package com.tienda.usuarios.adaptador.modelo.controller;
 
 public class CrearUsuario_ControllerModel extends UsuarioBasicData{
     private String contrasena;

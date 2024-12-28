@@ -1,6 +1,6 @@
 package com.tienda.usuarios.adaptador.puerto.entrada;
 
-import com.tienda.usuarios.adaptador.modelo.UsuarioBasicData;
+import com.tienda.usuarios.adaptador.modelo.controller.UsuarioBasicData;
 import com.tienda.usuarios.dominio.Usuario;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

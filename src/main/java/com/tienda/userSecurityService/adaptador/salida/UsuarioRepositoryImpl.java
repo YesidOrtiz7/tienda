@@ -1,7 +1,7 @@
 package com.tienda.userSecurityService.adaptador.salida;
 
 import com.tienda.userSecurityService.aplicacion.puerto.salida.FindUsuarioByDoc;
-import com.tienda.usuarios.adaptador.modelo.UsuarioPersistenceModel;
+import com.tienda.usuarios.adaptador.modelo.persistencia.UsuarioPersistenceModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

@@ -3,7 +3,7 @@ package com.tienda.userSecurityService.aplicacion.servicio;
 import com.tienda.administracion.adaptador.modelo.AdministradorPersistenceModel;
 import com.tienda.userSecurityService.aplicacion.puerto.salida.FindAdminByDoc;
 import com.tienda.userSecurityService.aplicacion.puerto.salida.FindUsuarioByDoc;
-import com.tienda.usuarios.adaptador.modelo.UsuarioPersistenceModel;
+import com.tienda.usuarios.adaptador.modelo.persistencia.UsuarioPersistenceModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

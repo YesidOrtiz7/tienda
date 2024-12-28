@@ -1,7 +1,8 @@
 package com.tienda.usuarios.adaptador.puerto.salida.persistencia;
 
 import com.tienda.exceptionHandler.excepciones.InvalidInputException;
-import com.tienda.usuarios.adaptador.modelo.UsuarioPersistenceModel;
+import com.tienda.usuarios.adaptador.modelo.persistencia.UsuarioPersistenceModel;
+import com.tienda.usuarios.adaptador.puerto.salida.persistencia.rol.MapperRepositoryToDomainRol;
 import com.tienda.usuarios.aplicacion.puerto.salida.PuertoCrearUsuario;
 import com.tienda.usuarios.dominio.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +13,18 @@ import org.springframework.stereotype.Repository;
 public class CrearUsuarioRepository implements PuertoCrearUsuario {
     private UsuarioCrudRepository repository;
     private MapperRepositoryToDomainUsuario mapper;
+    private MapperRepositoryToDomainRol mapperRol;
     private PasswordEncoder passwordEncoder;
 
 
     @Autowired
     public void setMapper(MapperRepositoryToDomainUsuario mapper) {
         this.mapper = mapper;
+    }
+
+    @Autowired
+    public void setMapperRol(MapperRepositoryToDomainRol mapperRol) {
+        this.mapperRol = mapperRol;
     }
 
     @Autowired
@@ -43,7 +50,9 @@ public class CrearUsuarioRepository implements PuertoCrearUsuario {
         String passwordEncode= this.passwordEncoder.encode(usuario.getContrasena());
         usuario.setContrasena(passwordEncode);
 
-        UsuarioPersistenceModel response = repository.save(mapper.toPersistenceModel(usuario));
-        return mapper.toDomainModel(response);
+        UsuarioPersistenceModel persistenceModel =mapper.toPersistenceModel(usuario);
+
+        persistenceModel=repository.save(persistenceModel);
+        return mapper.toDomainModel(persistenceModel);
     }
 }

@@ -2,11 +2,10 @@ package com.tienda.usuarios.adaptador.puerto.entrada;
 
 import com.tienda.exceptionHandler.excepciones.InvalidInputException;
 import com.tienda.exceptionHandler.excepciones.SearchItemNotFoundException;
-import com.tienda.usuarios.adaptador.modelo.CrearUsuario_ControllerModel;
-import com.tienda.usuarios.adaptador.modelo.IdAndBooleanRequest;
-//import com.tienda.usuarios.adaptador.modelo.IdRequest;
-import com.tienda.usuarios.adaptador.modelo.QrCodeUrl;
-import com.tienda.usuarios.adaptador.modelo.UsuarioBasicData;
+import com.tienda.usuarios.adaptador.modelo.controller.CrearUsuario_ControllerModel;
+import com.tienda.usuarios.adaptador.modelo.controller.IdAndBooleanRequest;
+//import com.tienda.usuarios.adaptador.modelo.controller.IdRequest;
+import com.tienda.usuarios.adaptador.modelo.controller.QrCodeUrl;
 import com.tienda.usuarios.aplicacion.puerto.entrada.CasoUsoCrearUsuario;
 import com.tienda.usuarios.aplicacion.puerto.entrada.CasoUsoInhabilitarUsuario;
 //import com.tienda.usuarios.dominio.Usuario;

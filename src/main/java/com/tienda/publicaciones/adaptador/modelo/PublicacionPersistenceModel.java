@@ -1,7 +1,7 @@
 package com.tienda.publicaciones.adaptador.modelo;
 
 import com.tienda.categoriasProductos.adaptador.modelo.CategoriaPersistenceModel;
-import com.tienda.usuarios.adaptador.modelo.UsuarioPersistenceModel;
+import com.tienda.usuarios.adaptador.modelo.persistencia.UsuarioPersistenceModel;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

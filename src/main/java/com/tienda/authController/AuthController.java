@@ -5,7 +5,7 @@ import com.tienda.authController.model.LoginDTO;
 import com.tienda.exceptionHandler.excepciones.SearchItemNotFoundException;
 import com.tienda.userSecurityService.aplicacion.puerto.salida.FindAdminByDoc;
 import com.tienda.userSecurityService.aplicacion.puerto.salida.FindUsuarioByDoc;
-import com.tienda.usuarios.adaptador.modelo.UsuarioPersistenceModel;
+import com.tienda.usuarios.adaptador.modelo.persistencia.UsuarioPersistenceModel;
 import com.tienda.webConfigSecurity.JwtUtil;
 import com.tienda.webConfigSecurity.totp.TotpUtils;
 import org.springframework.beans.factory.annotation.Autowired;

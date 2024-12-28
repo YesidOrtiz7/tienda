@@ -1,6 +1,6 @@
-package com.tienda.usuarios.adaptador.modelo;
+package com.tienda.usuarios.adaptador.modelo.controller;
 
-public class IdAndBooleanRequest extends IdRequest{
+public class IdAndBooleanRequest extends IdRequest {
     private boolean habilitado;
 
     public boolean isHabilitado() {

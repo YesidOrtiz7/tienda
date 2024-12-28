@@ -1,6 +1,8 @@
-package com.tienda.usuarios.adaptador.modelo;
+package com.tienda.usuarios.adaptador.modelo.persistencia;
 
 import jakarta.persistence.*;
+
+import java.util.List;
 
 
 @Entity
@@ -40,6 +42,9 @@ public class UsuarioPersistenceModel {
 
     @Column(nullable = false)
     private int saldoEnCuenta;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UsuarioRolEntity> usuarioRoles;
 
     public UsuarioPersistenceModel() {
     }

@@ -1,13 +1,14 @@
 package com.tienda.usuarios.adaptador.puerto.salida.persistencia;
 
-import com.tienda.usuarios.adaptador.modelo.UsuarioPersistenceModel;
+import com.tienda.usuarios.adaptador.modelo.persistencia.UsuarioPersistenceModel;
+import com.tienda.usuarios.adaptador.puerto.salida.persistencia.rol.MapperRepositoryToDomainRol;
 import com.tienda.usuarios.dominio.Usuario;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {MapperRepositoryToDomainRol.class})
 public interface MapperRepositoryToDomainUsuario {
     @Mappings({
         @Mapping(source = "id",target = "id"),

@@ -1,5 +1,7 @@
 package com.tienda.usuarios.dominio;
 
+import java.util.List;
+
 public class Usuario {
     private int id;
     private String documento;
@@ -12,6 +14,7 @@ public class Usuario {
     private boolean bloqueado;
     private boolean eliminado;
     private int saldoEnCuenta;
+    private List<Rol> roles;
 
 
     public Usuario() {
@@ -103,5 +106,17 @@ public class Usuario {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public void agregarRol(Rol rol){
+        this.roles.add(rol);
+    }
+
+    public void eliminarRol(Rol rol){
+        this.roles.remove(rol);
+    }
+
+    public void setRoles(List<Rol> roles) {
+        this.roles = roles;
     }
 }

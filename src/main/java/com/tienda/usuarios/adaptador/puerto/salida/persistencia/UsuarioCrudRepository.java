@@ -1,6 +1,6 @@
 package com.tienda.usuarios.adaptador.puerto.salida.persistencia;
 
-import com.tienda.usuarios.adaptador.modelo.UsuarioPersistenceModel;
+import com.tienda.usuarios.adaptador.modelo.persistencia.UsuarioPersistenceModel;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
