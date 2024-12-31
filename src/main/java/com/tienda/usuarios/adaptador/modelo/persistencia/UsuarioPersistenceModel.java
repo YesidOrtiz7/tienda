@@ -1,5 +1,6 @@
 package com.tienda.usuarios.adaptador.modelo.persistencia;
 
+import com.tienda.cuentas.adaptador.puerto.salida.CuentaEntity;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -10,10 +11,10 @@ import java.util.List;
 public class UsuarioPersistenceModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario", nullable = false)
+    @Column(name = "id_usuario", nullable = false, unique = true)
     private int id;
 
-    @Column(nullable = false,length = 12)
+    @Column(nullable = false,length = 12, unique = true)
     private String documento;
 
     @Column(nullable = false,length = 120)
@@ -45,6 +46,9 @@ public class UsuarioPersistenceModel {
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UsuarioRolEntity> usuarioRoles;
+
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private CuentaEntity cuenta;
 
     public UsuarioPersistenceModel() {
     }
@@ -139,5 +143,21 @@ public class UsuarioPersistenceModel {
 
     public String getUserName(){
         return this.nombres+" "+ this.apellidos;
+    }
+
+    public List<UsuarioRolEntity> getUsuarioRoles() {
+        return usuarioRoles;
+    }
+
+    public void setUsuarioRoles(List<UsuarioRolEntity> usuarioRoles) {
+        this.usuarioRoles = usuarioRoles;
+    }
+
+    public CuentaEntity getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(CuentaEntity cuenta) {
+        this.cuenta = cuenta;
     }
 }
