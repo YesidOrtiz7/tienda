@@ -9,6 +9,7 @@ import com.tienda.usuarios.dominio.Rol;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -66,6 +67,10 @@ public class RolRepository implements PuertoRol {
 
     @Override
     public List<Rol> obtenerRoles() {
-        return null;//<-------
+        List<Rol> response=new ArrayList<>();
+        repository.findAll().forEach(
+                (i)->response.add(mapper.toDomainModel(i))
+        );
+        return response;
     }
 }

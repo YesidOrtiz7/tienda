@@ -1,6 +1,8 @@
 package com.tienda.usuarios.adaptador.puerto.salida.persistencia.rol;
 
 import com.tienda.exceptionHandler.excepciones.InvalidInputException;
+import com.tienda.exceptionHandler.excepciones.ItemAlreadyExistException;
+import com.tienda.exceptionHandler.excepciones.SearchItemNotFoundException;
 import com.tienda.usuarios.adaptador.modelo.persistencia.RolEntity;
 import com.tienda.usuarios.dominio.Rol;
 import org.junit.jupiter.api.Assertions;
@@ -43,7 +45,6 @@ class RolRepositoryTest {
     @Test
     void obtenerRolPorId() {
         try {
-            //when(mapper.toPersistenceModel(rolDomainModel)).thenReturn(rolPersistenceModel);
             when(mapper.toDomainModel(rolPersistenceModel)).thenReturn(rolDomainModel);
             when(interfaceRepository.findById(1)).thenReturn(Optional.of(rolPersistenceModel));
             assertEquals(rolDomainModel,repository.obtenerRolPorId(1));
@@ -71,6 +72,29 @@ class RolRepositoryTest {
         try {
             when(mapper.toPersistenceModel(rolDomainModel)).thenReturn(rolPersistenceModel);
             when(mapper.toDomainModel(rolPersistenceModel)).thenReturn(rolDomainModel);
+            when(interfaceRepository.save(rolPersistenceModel)).thenReturn(rolPersistenceModel);
+            when(interfaceRepository.existsById(rolPersistenceModel.getId())).thenReturn(false);
+            assertEquals(rolDomainModel,repository.nuevoRol(rolDomainModel));
+            verify(mapper,times(1)).toPersistenceModel(rolDomainModel);
+            verify(mapper,times(1)).toDomainModel(rolPersistenceModel);
+            verify(interfaceRepository,times(1)).save(rolPersistenceModel);
+            verify(interfaceRepository,times(1)).existsById(rolPersistenceModel.getId());
+        }catch (Exception e){
+            fail(e);
+        }
+    }
+    @Test
+    void nuevoRol_RolExiste() {
+        try {
+            when(mapper.toPersistenceModel(rolDomainModel)).thenReturn(rolPersistenceModel);
+            when(mapper.toDomainModel(rolPersistenceModel)).thenReturn(rolDomainModel);
+            when(interfaceRepository.save(rolPersistenceModel)).thenReturn(rolPersistenceModel);
+            when(interfaceRepository.existsById(rolPersistenceModel.getId())).thenReturn(true);
+            assertThrows(ItemAlreadyExistException.class,()->repository.nuevoRol(rolDomainModel));
+            verify(mapper,times(0)).toPersistenceModel(rolDomainModel);
+            verify(mapper,times(0)).toDomainModel(rolPersistenceModel);
+            verify(interfaceRepository,times(0)).save(rolPersistenceModel);
+            verify(interfaceRepository,times(1)).existsById(rolPersistenceModel.getId());
         }catch (Exception e){
             fail(e);
         }
@@ -78,13 +102,61 @@ class RolRepositoryTest {
 
     @Test
     void eliminarRol() {
+        try {
+            when(interfaceRepository.existsById(rolPersistenceModel.getId())).thenReturn(true);
+            assertTrue(repository.eliminarRol(rolPersistenceModel.getId()));
+            verify(interfaceRepository,times(1)).existsById(rolPersistenceModel.getId());
+            verify(interfaceRepository,times(1)).deleteById(rolPersistenceModel.getId());
+        }catch (Exception e){
+            fail(e);
+        }
+    }
+    @Test
+    void eliminarRol_RolNoExiste() {
+        try {
+            when(interfaceRepository.existsById(rolPersistenceModel.getId())).thenReturn(false);
+            assertThrows(SearchItemNotFoundException.class, ()->repository.eliminarRol(rolPersistenceModel.getId()));
+            verify(interfaceRepository,times(1)).existsById(rolPersistenceModel.getId());
+            verify(interfaceRepository,times(0)).deleteById(rolPersistenceModel.getId());
+        }catch (Exception e){
+            fail(e);
+        }
     }
 
     @Test
     void actualizarRol() {
+        try {
+            when(interfaceRepository.existsById(rolPersistenceModel.getId())).thenReturn(true);
+            when(interfaceRepository.save(rolPersistenceModel)).thenReturn(rolPersistenceModel);
+            when(mapper.toDomainModel(rolPersistenceModel)).thenReturn(rolDomainModel);
+            when(mapper.toPersistenceModel(rolDomainModel)).thenReturn(rolPersistenceModel);
+            assertEquals(rolDomainModel,repository.actualizarRol(rolDomainModel));
+            verify(mapper,times(1)).toDomainModel(rolPersistenceModel);
+            verify(mapper,times(1)).toPersistenceModel(rolDomainModel);
+            verify(interfaceRepository,times(1)).existsById(rolPersistenceModel.getId());
+            verify(interfaceRepository,times(1)).save(rolPersistenceModel);
+        }catch (Exception e){
+            fail(e);
+        }
+    }
+    @Test
+    void actualizarRol_RolNoExiste() {
+        try {
+            when(interfaceRepository.existsById(rolPersistenceModel.getId())).thenReturn(false);
+            when(interfaceRepository.save(rolPersistenceModel)).thenReturn(rolPersistenceModel);
+            when(mapper.toDomainModel(rolPersistenceModel)).thenReturn(rolDomainModel);
+            when(mapper.toPersistenceModel(rolDomainModel)).thenReturn(rolPersistenceModel);
+            assertThrows(SearchItemNotFoundException.class,()->repository.actualizarRol(rolDomainModel));
+            verify(mapper,times(0)).toDomainModel(rolPersistenceModel);
+            verify(mapper,times(0)).toPersistenceModel(rolDomainModel);
+            verify(interfaceRepository,times(1)).existsById(rolPersistenceModel.getId());
+            verify(interfaceRepository,times(0)).save(rolPersistenceModel);
+        }catch (Exception e){
+            fail(e);
+        }
     }
 
-    @Test
+    /*@Test
     void obtenerRoles() {
-    }
+    }*/
 }
