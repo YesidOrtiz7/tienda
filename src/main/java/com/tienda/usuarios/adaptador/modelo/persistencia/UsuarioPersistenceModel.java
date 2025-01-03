@@ -1,6 +1,6 @@
 package com.tienda.usuarios.adaptador.modelo.persistencia;
 
-import com.tienda.cuentas.adaptador.puerto.salida.CuentaEntity;
+import com.tienda.cuentas.adaptador.puerto.salida.modelos.CuentaEntity;
 import jakarta.persistence.*;
 
 import java.util.List;
