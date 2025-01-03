@@ -41,9 +41,6 @@ public class UsuarioPersistenceModel {
     @Column(nullable = false)
     private boolean eliminado;
 
-    @Column(nullable = false)
-    private int saldoEnCuenta;
-
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UsuarioRolEntity> usuarioRoles;
 
@@ -99,14 +96,6 @@ public class UsuarioPersistenceModel {
 
     public void setBloqueado(boolean bloqueado) {
         this.bloqueado = bloqueado;
-    }
-
-    public int getSaldoEnCuenta() {
-        return saldoEnCuenta;
-    }
-
-    public void setSaldoEnCuenta(int saldoEnCuenta) {
-        this.saldoEnCuenta = saldoEnCuenta;
     }
 
     public String getTotpSecret() {

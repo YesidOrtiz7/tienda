@@ -37,7 +37,6 @@ class PublicacionServiceTest {
         usuario.setApellidos("Ortiz");
         usuario.setContrasena("Asdf123+");
         usuario.setBloqueado(true);
-        usuario.setSaldoEnCuenta(0);
         service.setPortOut(repository);
         publicacion=new Publicacion(1,"Tomate cherry","Tomate cherry de alta calidad",10.5,new Categoria(1,"frutas"),5, LocalDateTime.now());
         publicacion.setUsuario(usuario);

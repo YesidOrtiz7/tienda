@@ -1,5 +1,6 @@
 package com.tienda.usuarios.adaptador.puerto.salida.persistencia;
 
+import com.tienda.cuentas.aplicacion.puerto.salida.PuertoSalidaCuenta;
 import com.tienda.usuarios.adaptador.modelo.persistencia.UsuarioPersistenceModel;
 import com.tienda.usuarios.dominio.Usuario;
 import org.junit.jupiter.api.Assertions;
@@ -14,6 +15,7 @@ class CrearUsuarioRepositoryTest {
     private  MapperRepositoryToDomainUsuario mapper;
     private CrearUsuarioRepository repository=new CrearUsuarioRepository();
     private UsuarioCrudRepository interfaceRepository;
+    private PuertoSalidaCuenta repositoryCuenta=Mockito.mock(PuertoSalidaCuenta.class);
     private PasswordEncoder passwordEncoder;
     @BeforeEach
     void setUp(){
@@ -27,7 +29,6 @@ class CrearUsuarioRepositoryTest {
         usuarioDomainModel.setContrasena("Asdf123+");
         usuarioDomainModel.setBloqueado(false);
         usuarioDomainModel.setEliminado(false);
-        usuarioDomainModel.setSaldoEnCuenta(0);
 
         usuarioPersistenceModel=new UsuarioPersistenceModel();
         usuarioPersistenceModel.setId(1);
@@ -44,6 +45,7 @@ class CrearUsuarioRepositoryTest {
         repository.setMapper(mapper);
         repository.setRepository(interfaceRepository);
         repository.setPasswordEncoder(passwordEncoder);
+        repository.setCuentaRepository(repositoryCuenta);
     }
 
     @Test

@@ -1,6 +1,9 @@
 package com.tienda.usuarios.adaptador.puerto.salida.persistencia;
 
+import com.tienda.cuentas.aplicacion.puerto.salida.PuertoSalidaCuenta;
+import com.tienda.cuentas.dominio.Cuenta;
 import com.tienda.exceptionHandler.excepciones.InvalidInputException;
+import com.tienda.exceptionHandler.excepciones.SearchItemNotFoundException;
 import com.tienda.usuarios.adaptador.modelo.persistencia.UsuarioPersistenceModel;
 import com.tienda.usuarios.adaptador.puerto.salida.persistencia.rol.MapperRepositoryToDomainRol;
 import com.tienda.usuarios.aplicacion.puerto.salida.PuertoCrearUsuario;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class CrearUsuarioRepository implements PuertoCrearUsuario {
     private UsuarioCrudRepository repository;
+    private PuertoSalidaCuenta cuentaRepository;
     private MapperRepositoryToDomainUsuario mapper;
     private MapperRepositoryToDomainRol mapperRol;
     private PasswordEncoder passwordEncoder;
@@ -37,8 +41,12 @@ public class CrearUsuarioRepository implements PuertoCrearUsuario {
         this.passwordEncoder = passwordEncoder;
     }
 
+    public void setCuentaRepository(PuertoSalidaCuenta cuentaRepository) {
+        this.cuentaRepository = cuentaRepository;
+    }
+
     @Override
-    public Usuario crearUsuario(Usuario usuario) throws InvalidInputException {
+    public Usuario crearUsuario(Usuario usuario) throws InvalidInputException, SearchItemNotFoundException {
         if (usuario.getContrasena().length()<8){
             throw new InvalidInputException("La contraseña debe tener almenos 8 caracteres");
         }
@@ -53,6 +61,8 @@ public class CrearUsuarioRepository implements PuertoCrearUsuario {
         UsuarioPersistenceModel persistenceModel =mapper.toPersistenceModel(usuario);
 
         persistenceModel=repository.save(persistenceModel);
+        Cuenta cuentaUsuario=new Cuenta(persistenceModel.getId(), 0);
+        cuentaRepository.crearCuenta(cuentaUsuario);
         return mapper.toDomainModel(persistenceModel);
     }
 }

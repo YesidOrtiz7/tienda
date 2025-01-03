@@ -1,6 +1,7 @@
 package com.tienda.usuarios.aplicacion.servicio;
 
 import com.tienda.exceptionHandler.excepciones.InvalidInputException;
+import com.tienda.exceptionHandler.excepciones.SearchItemNotFoundException;
 import com.tienda.usuarios.aplicacion.puerto.entrada.CasoUsoCrearUsuario;
 import com.tienda.usuarios.aplicacion.puerto.salida.PuertoCrearUsuario;
 import com.tienda.usuarios.dominio.Usuario;
@@ -22,7 +23,7 @@ public class ServicioCrearUsuario implements CasoUsoCrearUsuario {
     }
 
     @Override
-    public String crearUsuario(Usuario usuario) throws InvalidInputException {
+    public String crearUsuario(Usuario usuario) throws InvalidInputException, SearchItemNotFoundException {
         if (usuario.getNombres().isBlank() || !usuario.getNombres().matches(regexNombre)){
             throw new InvalidInputException("Solo se permiten letras en el campo nombres");
         }
@@ -50,7 +51,6 @@ public class ServicioCrearUsuario implements CasoUsoCrearUsuario {
                      Contenga al menos un carácter especial (como @, #, $, %, etc.).""");
         }
         usuario.setBloqueado(true);
-        usuario.setSaldoEnCuenta(0);
 
         //Generar el secreto TOTP
         String totpSecret = TotpUtils.generateSecret();

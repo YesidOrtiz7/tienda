@@ -21,7 +21,7 @@ public interface MapperRepositoryToDomainUsuario {
         @Mapping(source = "totpSecret",target = "totpSecret"),
         @Mapping(source = "bloqueado",target = "bloqueado"),
         @Mapping(source = "eliminado",target = "eliminado"),
-        @Mapping(source = "saldoEnCuenta",target = "saldoEnCuenta"),
+        @Mapping(source = "cuenta",target = "cuenta"),
     })
     UsuarioPersistenceModel toPersistenceModel(Usuario usuario);
     @InheritInverseConfiguration

@@ -23,10 +23,9 @@ class ServicioCrearUsuarioTest {
         domainModel.setNombres("Fabian");
         domainModel.setApellidos("Ortiz");
         domainModel.setCorreo("correo@Correo.com");
-        domainModel.setTelefono("123456");
+        domainModel.setTelefono("1234567890");
         domainModel.setContrasena("Asdf123+");
         domainModel.setBloqueado(true);
-        domainModel.setSaldoEnCuenta(0);
         service.setRepository(repository);
     }
 
@@ -119,6 +118,8 @@ class ServicioCrearUsuarioTest {
             Mockito.verify(repository,Mockito.times(0)).crearUsuario(domainModel);
 
             domainModel.setTelefono("+52 1234567890");
+            Assertions.assertDoesNotThrow(()->service.crearUsuario(domainModel));
+            domainModel.setTelefono("1234567890");
             Assertions.assertDoesNotThrow(()->service.crearUsuario(domainModel));
         } catch (Exception e) {
             Assertions.fail(e);

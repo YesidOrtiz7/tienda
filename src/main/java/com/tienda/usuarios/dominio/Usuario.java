@@ -1,5 +1,7 @@
 package com.tienda.usuarios.dominio;
 
+import com.tienda.cuentas.dominio.Cuenta;
+
 import java.util.List;
 
 public class Usuario {
@@ -13,8 +15,8 @@ public class Usuario {
     private String totpSecret;
     private boolean bloqueado;
     private boolean eliminado;
-    private int saldoEnCuenta;
     private List<Rol> roles;
+    private Cuenta cuenta;
 
 
     public Usuario() {
@@ -76,14 +78,6 @@ public class Usuario {
         this.bloqueado = bloqueado;
     }
 
-    public int getSaldoEnCuenta() {
-        return saldoEnCuenta;
-    }
-
-    public void setSaldoEnCuenta(int saldoEnCuenta) {
-        this.saldoEnCuenta = saldoEnCuenta;
-    }
-
     public String getTotpSecret() {
         return totpSecret;
     }
@@ -118,5 +112,17 @@ public class Usuario {
 
     public void setRoles(List<Rol> roles) {
         this.roles = roles;
+    }
+
+    public List<Rol> getRoles() {
+        return roles;
+    }
+
+    public Cuenta getCuenta() {
+        return cuenta;
+    }
+
+    public void setCuenta(Cuenta cuenta) {
+        this.cuenta = cuenta;
     }
 }
