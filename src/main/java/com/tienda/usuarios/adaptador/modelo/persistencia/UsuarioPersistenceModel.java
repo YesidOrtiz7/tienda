@@ -1,5 +1,6 @@
 package com.tienda.usuarios.adaptador.modelo.persistencia;
 
+import com.tienda.compras.adaptador.modelo.persistencia.CompraEntity;
 import com.tienda.cuentas.adaptador.puerto.salida.modelos.CuentaEntity;
 import jakarta.persistence.*;
 
@@ -41,11 +42,14 @@ public class UsuarioPersistenceModel {
     @Column(nullable = false)
     private boolean eliminado;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<UsuarioRolEntity> usuarioRoles;
 
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private CuentaEntity cuenta;
+
+    @OneToMany(mappedBy = "usuario_id", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    private List<CompraEntity> compras;
 
     public UsuarioPersistenceModel() {
     }
@@ -148,5 +152,13 @@ public class UsuarioPersistenceModel {
 
     public void setCuenta(CuentaEntity cuenta) {
         this.cuenta = cuenta;
+    }
+
+    public List<CompraEntity> getCompras() {
+        return compras;
+    }
+
+    public void setCompras(List<CompraEntity> compras) {
+        this.compras = compras;
     }
 }
