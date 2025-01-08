@@ -66,7 +66,7 @@ public class PublicacionService implements PublicacionPortIn {
         if (publicacion.getUsuario().getId()<=0 && !publicacion.getUsuario().getDocumento().isBlank()){
             publicacion.setUsuario(obtenerUsuarioPorDocumento.obtenerPorDocumento(publicacion.getUsuario().getDocumento()));
         }
-        if (!validacionUsuario.validarUsuarioExiste(publicacion.getUsuario().getId())){
+        if (!validacionUsuario.validarUsuarioExistePorId(publicacion.getUsuario().getId())){
             throw new InvalidInputException("El usuario que esta tratando de crear la publicacion no existe");
         }
         publicacion.setTituloPublicacion(publicacion.getTituloPublicacion().replaceAll("\\s{2,}", " "));
@@ -94,7 +94,7 @@ public class PublicacionService implements PublicacionPortIn {
         if (publicacion.getUsuario().getId()<=0 && !publicacion.getUsuario().getDocumento().isBlank()){
             publicacion.setUsuario(obtenerUsuarioPorDocumento.obtenerPorDocumento(publicacion.getUsuario().getDocumento()));
         }
-        if (!validacionUsuario.validarUsuarioExiste(publicacion.getUsuario().getId())){
+        if (!validacionUsuario.validarUsuarioExistePorId(publicacion.getUsuario().getId())){
             throw new InvalidInputException("El usuario que esta tratando de crear la publicacion no existe");
         }
         publicacion.setTituloPublicacion(publicacion.getTituloPublicacion().replaceAll("\\s{2,}", " "));

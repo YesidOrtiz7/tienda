@@ -5,6 +5,7 @@ import com.tienda.usuarios.dominio.Usuario;
 
 public interface PuertoSalidaUsuario {
     boolean existById(int id);
+    boolean existByDocumento(String documento);
     Usuario getById(int id) throws SearchItemNotFoundException;
     Usuario getByDocument(String document) throws SearchItemNotFoundException;
 }

@@ -8,6 +8,16 @@ public class Orden {
     private int cantidad;
     private Compra compra;
 
+    public Orden() {
+    }
+
+    public Orden(int id_orden, Publicacion producto, int cantidad, Compra compra) {
+        this.id_orden = id_orden;
+        this.producto = producto;
+        this.cantidad = cantidad;
+        this.compra = compra;
+    }
+
     public int getId_orden() {
         return id_orden;
     }

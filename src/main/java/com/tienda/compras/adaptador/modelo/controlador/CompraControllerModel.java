@@ -1,30 +1,22 @@
-package com.tienda.compras.dominio;
+package com.tienda.compras.adaptador.modelo.controlador;
 
+import com.tienda.compras.dominio.Orden;
 import com.tienda.usuarios.dominio.Usuario;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Compra {
-    private int id_compra;
-    private Usuario usuario;
+public class CompraControllerModel {
+    private int usuario;
     private List<Orden> ordenes;
     private double total;
     private LocalDateTime fecha;
 
-    public int getId_compra() {
-        return id_compra;
-    }
-
-    public void setId_compra(int id_compra) {
-        this.id_compra = id_compra;
-    }
-
-    public Usuario getUsuario() {
+    public int getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(int usuario) {
         this.usuario = usuario;
     }
 
@@ -50,9 +42,5 @@ public class Compra {
 
     public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
-    }
-
-    public static double calcularTotal(int cantidad, double precio){
-        return cantidad*precio;
     }
 }

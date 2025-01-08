@@ -27,6 +27,11 @@ public class UsuarioRepository implements PuertoSalidaUsuario {
     }
 
     @Override
+    public boolean existByDocumento(String documento) {
+        return repository.existsByDocumento(documento);
+    }
+
+    @Override
     public Usuario getById(int id) throws SearchItemNotFoundException {
         return mapper.toDomainModel(
                 this.repository.findById(id).orElseThrow(()->new SearchItemNotFoundException("No existe el usuario"))

@@ -48,7 +48,7 @@ public class UsuarioPersistenceModel {
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
     private CuentaEntity cuenta;
 
-    @OneToMany(mappedBy = "usuario_id", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private List<CompraEntity> compras;
 
     public UsuarioPersistenceModel() {

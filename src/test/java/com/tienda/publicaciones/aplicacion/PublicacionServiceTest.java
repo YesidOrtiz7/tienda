@@ -76,12 +76,12 @@ class PublicacionServiceTest {
     @Test
     void crearPublicacion() {
         try {
-            Mockito.when(validarUsuario.validarUsuarioExiste(usuario.getId())).thenReturn(true);
+            Mockito.when(validarUsuario.validarUsuarioExistePorId(usuario.getId())).thenReturn(true);
             Mockito.when(repository.crearPublicacion(publicacion)).thenReturn(publicacion);
             Mockito.when(obtenerUsuarioPorDocumentoMock.obtenerPorDocumento(usuario.getDocumento())).thenReturn(usuario);
             Assertions.assertEquals(publicacion,service.crearPublicacion(publicacion));
             Mockito.verify(repository,Mockito.times(1)).crearPublicacion(publicacion);
-            Mockito.verify(validarUsuario,Mockito.times(1)).validarUsuarioExiste(usuario.getId());
+            Mockito.verify(validarUsuario,Mockito.times(1)).validarUsuarioExistePorId(usuario.getId());
         } catch (Exception e) {
             Assertions.fail(e);
         }
@@ -89,7 +89,7 @@ class PublicacionServiceTest {
     @Test
     void crearPublicacion_DescripcionEnBlanco() {
         try {
-            Mockito.when(validarUsuario.validarUsuarioExiste(usuario.getId())).thenReturn(true);
+            Mockito.when(validarUsuario.validarUsuarioExistePorId(usuario.getId())).thenReturn(true);
             Mockito.when(repository.crearPublicacion(publicacion)).thenReturn(publicacion);
             Mockito.when(obtenerUsuarioPorDocumentoMock.obtenerPorDocumento(usuario.getDocumento())).thenReturn(usuario);
 
@@ -98,7 +98,7 @@ class PublicacionServiceTest {
             publicacion.setDescripcion("");
             Assertions.assertThrows(InvalidInputException.class,()->service.crearPublicacion(publicacion));
             Mockito.verify(repository,Mockito.times(0)).crearPublicacion(publicacion);
-            Mockito.verify(validarUsuario,Mockito.times(0)).validarUsuarioExiste(usuario.getId());
+            Mockito.verify(validarUsuario,Mockito.times(0)).validarUsuarioExistePorId(usuario.getId());
         } catch (Exception e) {
             Assertions.fail(e);
         }
@@ -106,14 +106,14 @@ class PublicacionServiceTest {
     @Test
     void crearPublicacion_ValorDelProductoInvalida() {
         try {
-            Mockito.when(validarUsuario.validarUsuarioExiste(usuario.getId())).thenReturn(true);
+            Mockito.when(validarUsuario.validarUsuarioExistePorId(usuario.getId())).thenReturn(true);
             Mockito.when(repository.crearPublicacion(publicacion)).thenReturn(publicacion);
             Mockito.when(obtenerUsuarioPorDocumentoMock.obtenerPorDocumento(usuario.getDocumento())).thenReturn(usuario);
 
             publicacion.setPrecio(-1);
             Assertions.assertThrows(InvalidInputException.class,()->service.crearPublicacion(publicacion));
             Mockito.verify(repository,Mockito.times(0)).crearPublicacion(publicacion);
-            Mockito.verify(validarUsuario,Mockito.times(0)).validarUsuarioExiste(usuario.getId());
+            Mockito.verify(validarUsuario,Mockito.times(0)).validarUsuarioExistePorId(usuario.getId());
         } catch (Exception e) {
             Assertions.fail(e);
         }
@@ -123,7 +123,7 @@ class PublicacionServiceTest {
         try {
 
             Mockito.when(repository.crearPublicacion(publicacion)).thenReturn(publicacion);
-            Mockito.when(validarUsuario.validarUsuarioExiste(usuario.getId())).thenReturn(true);
+            Mockito.when(validarUsuario.validarUsuarioExistePorId(usuario.getId())).thenReturn(true);
             Mockito.when(obtenerUsuarioPorDocumentoMock.obtenerPorDocumento(usuario.getDocumento())).thenReturn(usuario);
 
             publicacion.setCantidadDisponible(-1);
@@ -131,7 +131,7 @@ class PublicacionServiceTest {
             publicacion.setCantidadDisponible(0);
             Assertions.assertThrows(InvalidInputException.class,()->service.crearPublicacion(publicacion));
             Mockito.verify(repository,Mockito.times(0)).crearPublicacion(publicacion);
-            Mockito.verify(validarUsuario,Mockito.times(0)).validarUsuarioExiste(usuario.getId());
+            Mockito.verify(validarUsuario,Mockito.times(0)).validarUsuarioExistePorId(usuario.getId());
         } catch (Exception e) {
             Assertions.fail(e);
         }
@@ -141,12 +141,12 @@ class PublicacionServiceTest {
         try {
 
             Mockito.when(repository.crearPublicacion(publicacion)).thenReturn(publicacion);
-            Mockito.when(validarUsuario.validarUsuarioExiste(usuario.getId())).thenReturn(false);
+            Mockito.when(validarUsuario.validarUsuarioExistePorId(usuario.getId())).thenReturn(false);
             Mockito.when(obtenerUsuarioPorDocumentoMock.obtenerPorDocumento(usuario.getDocumento())).thenReturn(usuario);
 
             Assertions.assertThrows(InvalidInputException.class,()->service.crearPublicacion(publicacion));
             Mockito.verify(repository,Mockito.times(0)).crearPublicacion(publicacion);
-            Mockito.verify(validarUsuario,Mockito.times(1)).validarUsuarioExiste(usuario.getId());
+            Mockito.verify(validarUsuario,Mockito.times(1)).validarUsuarioExistePorId(usuario.getId());
         } catch (Exception e) {
             Assertions.fail(e);
         }
@@ -155,7 +155,7 @@ class PublicacionServiceTest {
     void crearPublicacion_TituloInvalido() {
         try {
             Mockito.when(repository.crearPublicacion(publicacion)).thenReturn(publicacion);
-            Mockito.when(validarUsuario.validarUsuarioExiste(usuario.getId())).thenReturn(true);
+            Mockito.when(validarUsuario.validarUsuarioExistePorId(usuario.getId())).thenReturn(true);
             Mockito.when(obtenerUsuarioPorDocumentoMock.obtenerPorDocumento(usuario.getDocumento())).thenReturn(usuario);
 
             publicacion.setTituloPublicacion("            ");
@@ -165,7 +165,7 @@ class PublicacionServiceTest {
             publicacion.setTituloPublicacion("");
             Assertions.assertThrows(InvalidInputException.class,()->service.crearPublicacion(publicacion));
             Mockito.verify(repository,Mockito.times(0)).crearPublicacion(publicacion);
-            Mockito.verify(validarUsuario,Mockito.times(0)).validarUsuarioExiste(usuario.getId());
+            Mockito.verify(validarUsuario,Mockito.times(0)).validarUsuarioExistePorId(usuario.getId());
         } catch (Exception e) {
             Assertions.fail(e);
         }
@@ -175,12 +175,12 @@ class PublicacionServiceTest {
     void actualizarPublicacion() {
         try {
             Mockito.when(repository.actualizarPublicacion(publicacion)).thenReturn(publicacion);
-            Mockito.when(validarUsuario.validarUsuarioExiste(usuario.getId())).thenReturn(true);
+            Mockito.when(validarUsuario.validarUsuarioExistePorId(usuario.getId())).thenReturn(true);
             Mockito.when(obtenerUsuarioPorDocumentoMock.obtenerPorDocumento(usuario.getDocumento())).thenReturn(usuario);
 
             Assertions.assertEquals(publicacion,service.actualizarPublicacion(publicacion));
             Mockito.verify(repository,Mockito.times(1)).actualizarPublicacion(publicacion);
-            Mockito.verify(validarUsuario,Mockito.times(1)).validarUsuarioExiste(usuario.getId());
+            Mockito.verify(validarUsuario,Mockito.times(1)).validarUsuarioExistePorId(usuario.getId());
         } catch (Exception e) {
             Assertions.fail(e);
         }
@@ -189,14 +189,14 @@ class PublicacionServiceTest {
     void actualizarPublicacion_CantidadDeUnidadesInvalida() {
         try {
             Mockito.when(repository.actualizarPublicacion(publicacion)).thenReturn(publicacion);
-            Mockito.when(validarUsuario.validarUsuarioExiste(usuario.getId())).thenReturn(true);
+            Mockito.when(validarUsuario.validarUsuarioExistePorId(usuario.getId())).thenReturn(true);
             Mockito.when(obtenerUsuarioPorDocumentoMock.obtenerPorDocumento(usuario.getDocumento())).thenReturn(usuario);
 
             publicacion.setCantidadDisponible(-1);
             Assertions.assertThrows(InvalidInputException.class,()->service.actualizarPublicacion(publicacion));
 
             Mockito.verify(repository,Mockito.times(0)).actualizarPublicacion(publicacion);
-            Mockito.verify(validarUsuario,Mockito.times(0)).validarUsuarioExiste(usuario.getId());
+            Mockito.verify(validarUsuario,Mockito.times(0)).validarUsuarioExistePorId(usuario.getId());
         } catch (Exception e) {
             Assertions.fail(e);
         }
@@ -205,13 +205,13 @@ class PublicacionServiceTest {
     void actualizarPublicacion_ValorDelProductoInvalida() {
         try {
             Mockito.when(repository.actualizarPublicacion(publicacion)).thenReturn(publicacion);
-            Mockito.when(validarUsuario.validarUsuarioExiste(usuario.getId())).thenReturn(true);
+            Mockito.when(validarUsuario.validarUsuarioExistePorId(usuario.getId())).thenReturn(true);
             Mockito.when(obtenerUsuarioPorDocumentoMock.obtenerPorDocumento(usuario.getDocumento())).thenReturn(usuario);
 
             publicacion.setPrecio(-1);
             Assertions.assertThrows(InvalidInputException.class,()->service.actualizarPublicacion(publicacion));
             Mockito.verify(repository,Mockito.times(0)).actualizarPublicacion(publicacion);
-            Mockito.verify(validarUsuario,Mockito.times(0)).validarUsuarioExiste(usuario.getId());
+            Mockito.verify(validarUsuario,Mockito.times(0)).validarUsuarioExistePorId(usuario.getId());
         } catch (Exception e) {
             Assertions.fail(e);
         }
@@ -220,7 +220,7 @@ class PublicacionServiceTest {
     void actualizarPublicacion_DescripcionEnBlanco() {
         try {
             Mockito.when(repository.actualizarPublicacion(publicacion)).thenReturn(publicacion);
-            Mockito.when(validarUsuario.validarUsuarioExiste(usuario.getId())).thenReturn(true);
+            Mockito.when(validarUsuario.validarUsuarioExistePorId(usuario.getId())).thenReturn(true);
             Mockito.when(obtenerUsuarioPorDocumentoMock.obtenerPorDocumento(usuario.getDocumento())).thenReturn(usuario);
 
             publicacion.setDescripcion("     ");
@@ -228,7 +228,7 @@ class PublicacionServiceTest {
             publicacion.setDescripcion("");
             Assertions.assertThrows(InvalidInputException.class,()->service.actualizarPublicacion(publicacion));
             Mockito.verify(repository,Mockito.times(0)).actualizarPublicacion(publicacion);
-            Mockito.verify(validarUsuario,Mockito.times(0)).validarUsuarioExiste(usuario.getId());
+            Mockito.verify(validarUsuario,Mockito.times(0)).validarUsuarioExistePorId(usuario.getId());
         } catch (Exception e) {
             Assertions.fail(e);
         }
@@ -239,12 +239,12 @@ class PublicacionServiceTest {
             /*en esta prueba se pasan todas las verificaciones y se deposita en el repositorio la responsabilidad
             * de determinar si la publicacion que se esta tratando de actualizar existe*/
             Mockito.when(repository.actualizarPublicacion(publicacion)).thenThrow(SearchItemNotFoundException.class);
-            Mockito.when(validarUsuario.validarUsuarioExiste(usuario.getId())).thenReturn(true);
+            Mockito.when(validarUsuario.validarUsuarioExistePorId(usuario.getId())).thenReturn(true);
             Mockito.when(obtenerUsuarioPorDocumentoMock.obtenerPorDocumento(usuario.getDocumento())).thenReturn(usuario);
 
             Assertions.assertThrows(SearchItemNotFoundException.class,()->service.actualizarPublicacion(publicacion));
             Mockito.verify(repository,Mockito.times(1)).actualizarPublicacion(publicacion);
-            Mockito.verify(validarUsuario,Mockito.times(1)).validarUsuarioExiste(usuario.getId());
+            Mockito.verify(validarUsuario,Mockito.times(1)).validarUsuarioExistePorId(usuario.getId());
         } catch (Exception e) {
             Assertions.fail(e);
         }
@@ -253,7 +253,7 @@ class PublicacionServiceTest {
     void actualizarPublicacion_TituloInvalido() {
         try {
             Mockito.when(repository.actualizarPublicacion(publicacion)).thenReturn(publicacion);
-            Mockito.when(validarUsuario.validarUsuarioExiste(usuario.getId())).thenReturn(true);
+            Mockito.when(validarUsuario.validarUsuarioExistePorId(usuario.getId())).thenReturn(true);
             Mockito.when(obtenerUsuarioPorDocumentoMock.obtenerPorDocumento(usuario.getDocumento())).thenReturn(usuario);
 
             publicacion.setTituloPublicacion("        ");
@@ -263,7 +263,7 @@ class PublicacionServiceTest {
             publicacion.setTituloPublicacion("");
             Assertions.assertThrows(InvalidInputException.class,()->service.actualizarPublicacion(publicacion));
             Mockito.verify(repository,Mockito.times(0)).actualizarPublicacion(publicacion);
-            Mockito.verify(validarUsuario,Mockito.times(0)).validarUsuarioExiste(usuario.getId());
+            Mockito.verify(validarUsuario,Mockito.times(0)).validarUsuarioExistePorId(usuario.getId());
         } catch (Exception e) {
             Assertions.fail(e);
         }
@@ -272,12 +272,12 @@ class PublicacionServiceTest {
     void actualizarPublicacion_UsuarioNoExiste() {
         try {
             Mockito.when(repository.actualizarPublicacion(publicacion)).thenReturn(publicacion);
-            Mockito.when(validarUsuario.validarUsuarioExiste(usuario.getId())).thenReturn(false);
+            Mockito.when(validarUsuario.validarUsuarioExistePorId(usuario.getId())).thenReturn(false);
             Mockito.when(obtenerUsuarioPorDocumentoMock.obtenerPorDocumento(usuario.getDocumento())).thenReturn(usuario);
 
             Assertions.assertThrows(InvalidInputException.class,()->service.actualizarPublicacion(publicacion));
             Mockito.verify(repository,Mockito.times(0)).actualizarPublicacion(publicacion);
-            Mockito.verify(validarUsuario,Mockito.times(1)).validarUsuarioExiste(usuario.getId());
+            Mockito.verify(validarUsuario,Mockito.times(1)).validarUsuarioExistePorId(usuario.getId());
         } catch (Exception e) {
             Assertions.fail(e);
         }

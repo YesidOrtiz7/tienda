@@ -16,7 +16,7 @@ public class CompraEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id",nullable = false)
-    private UsuarioPersistenceModel usuario_id;
+    private UsuarioPersistenceModel usuario;
 
     @OneToMany(mappedBy = "compra_id", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
     private List<OrdenEntity> orden_id;
@@ -35,12 +35,12 @@ public class CompraEntity {
         this.id_compra = id_compra;
     }
 
-    public UsuarioPersistenceModel getUsuario_id() {
-        return usuario_id;
+    public UsuarioPersistenceModel getUsuario() {
+        return usuario;
     }
 
-    public void setUsuario_id(UsuarioPersistenceModel usuario_id) {
-        this.usuario_id = usuario_id;
+    public void setUsuario(UsuarioPersistenceModel usuario) {
+        this.usuario = usuario;
     }
 
     public List<OrdenEntity> getOrden_id() {
