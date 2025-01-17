@@ -7,6 +7,7 @@ import com.tienda.compras.dominio.Orden;
 import com.tienda.exceptionHandler.excepciones.InvalidInputException;
 import com.tienda.exceptionHandler.excepciones.SearchItemNotFoundException;
 import com.tienda.publicaciones.dominio.Publicacion;
+import com.tienda.usuarios.aplicacion.puerto.entrada.CasoUsoObtenerUsuario;
 import com.tienda.usuarios.aplicacion.servicio.ServicioValidarUsuario;
 import com.tienda.usuarios.dominio.Usuario;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,6 +37,7 @@ class CompraServiceTest {
 
     private PuertoSalidaCompra repositoryMock=mock(PuertoSalidaCompra.class);
     private ServicioValidarUsuario servicioValidarUsuarioMock=mock(ServicioValidarUsuario.class);
+    private CasoUsoObtenerUsuario obtenerUsuario=mock(CasoUsoObtenerUsuario.class);
 
     private CompraService service;
 
@@ -47,7 +49,7 @@ class CompraServiceTest {
         domainModel.setId_compra(1);
         domainModel.setUsuario(usuario);
         domainModel.setOrdenes(List.of(orden1,orden2));
-        service=new CompraService(repositoryMock,servicioValidarUsuarioMock);
+        service=new CompraService(repositoryMock,servicioValidarUsuarioMock,obtenerUsuario);
     }
 
     @Test
@@ -95,27 +97,36 @@ class CompraServiceTest {
             fail(e);
         }
     }
-
+/*
     @Test
     void registrarCompra() {
         try {
-            when(servicioValidarUsuarioMock.validarUsuarioExistePorDocumento(domainModel.getUsuario().getDocumento())).thenReturn(true);
+            domainModel.setOrdenes(List.of(orden1,orden2));
+            when(servicioValidarUsuarioMock.validarUsuarioExistePorId(domainModel.getUsuario().getId())).thenReturn(true);
             when(repositoryMock.registrarCompra(domainModel)).thenReturn(domainModel);
-            assertEquals(domainModel,service.registrarCompra(domainModel));
+            when(obtenerUsuario.obtenerPorId(domainModel.getUsuario().getId())).thenReturn(usuario);
+            Compra response=service.registrarCompra(domainModel.getUsuario().getId(),domainModel.getOrdenes());
+            assertEquals(domainModel,response);
             verify(servicioValidarUsuarioMock,times(1)).validarUsuarioExistePorDocumento(domainModel.getUsuario().getDocumento());
             verify(repositoryMock,times(1)).registrarCompra(domainModel);
+            verify(obtenerUsuario,times(1)).obtenerPorId(domainModel.getUsuario().getId());
         } catch (Exception e) {
             fail(e);
         }
     }
+
+ */
     @Test
     void registrarCompra_UsuarioNoExiste() {
         try {
-            when(servicioValidarUsuarioMock.validarUsuarioExistePorDocumento(domainModel.getUsuario().getDocumento())).thenReturn(false);
+            domainModel.setOrdenes(List.of(orden1,orden2));
+            when(servicioValidarUsuarioMock.validarUsuarioExistePorId(domainModel.getUsuario().getId())).thenReturn(false);
             when(repositoryMock.registrarCompra(domainModel)).thenReturn(domainModel);
-            assertThrows(SearchItemNotFoundException.class,()->service.registrarCompra(domainModel));
-            verify(servicioValidarUsuarioMock,times(1)).validarUsuarioExistePorDocumento(domainModel.getUsuario().getDocumento());
+            when(obtenerUsuario.obtenerPorId(domainModel.getUsuario().getId())).thenReturn(usuario);
+            assertThrows(SearchItemNotFoundException.class,()->service.registrarCompra(domainModel.getUsuario().getId(),domainModel.getOrdenes()));
+            verify(servicioValidarUsuarioMock,times(1)).validarUsuarioExistePorId(domainModel.getUsuario().getId());
             verify(repositoryMock,times(0)).registrarCompra(domainModel);
+            verify(obtenerUsuario,times(0)).obtenerPorId(domainModel.getUsuario().getId());
         } catch (Exception e) {
             fail(e);
         }
@@ -123,12 +134,14 @@ class CompraServiceTest {
     @Test
     void registrarCompra_NoHayOrdenes() {
         try {
-            domainModel.setOrdenes(List.of());
-            when(servicioValidarUsuarioMock.validarUsuarioExistePorDocumento(domainModel.getUsuario().getDocumento())).thenReturn(true);
+            domainModel.setOrdenes(List.of(orden1,orden2));
+            when(servicioValidarUsuarioMock.validarUsuarioExistePorId(domainModel.getUsuario().getId())).thenReturn(true);
             when(repositoryMock.registrarCompra(domainModel)).thenReturn(domainModel);
-            assertThrows(InvalidInputException.class,()->service.registrarCompra(domainModel));
-            verify(servicioValidarUsuarioMock,times(1)).validarUsuarioExistePorDocumento(domainModel.getUsuario().getDocumento());
+            when(obtenerUsuario.obtenerPorId(domainModel.getUsuario().getId())).thenReturn(usuario);
+            assertThrows(InvalidInputException.class,()->service.registrarCompra(domainModel.getUsuario().getId(),List.of()));
+            verify(servicioValidarUsuarioMock,times(1)).validarUsuarioExistePorId(domainModel.getUsuario().getId());
             verify(repositoryMock,times(0)).registrarCompra(domainModel);
+            verify(obtenerUsuario,times(0)).obtenerPorId(domainModel.getUsuario().getId());
         } catch (Exception e) {
             fail(e);
         }

@@ -31,7 +31,7 @@ public class UsuarioController {
         this.inhabilitarUsuarioService = inhabilitarUsuarioService;
     }
     @PostMapping("/nuevousuario")
-    public ResponseEntity<QrCodeUrl> crearUsuario(CrearUsuario_ControllerModel user) throws InvalidInputException, SearchItemNotFoundException {
+    public ResponseEntity<QrCodeUrl> crearUsuario(@RequestBody CrearUsuario_ControllerModel user) throws InvalidInputException, SearchItemNotFoundException {
         String qrCodeUrl=serviceCrearUsuario.crearUsuario(mapper.toDomainModel(user));
         QrCodeUrl response=new QrCodeUrl();
         response.setQrCodeUrl(qrCodeUrl);

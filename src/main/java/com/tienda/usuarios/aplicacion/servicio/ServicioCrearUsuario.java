@@ -24,22 +24,31 @@ public class ServicioCrearUsuario implements CasoUsoCrearUsuario {
 
     @Override
     public String crearUsuario(Usuario usuario) throws InvalidInputException, SearchItemNotFoundException {
-        if (usuario.getNombres().isBlank() || !usuario.getNombres().matches(regexNombre)){
+        if (usuario.getNombres()==null||usuario.getNombres().isBlank() || !usuario.getNombres().matches(regexNombre)){
             throw new InvalidInputException("Solo se permiten letras en el campo nombres");
         }
-        if (usuario.getApellidos().isBlank() ||!usuario.getApellidos().matches(regexNombre)){
+        if (usuario.getApellidos()==null||usuario.getApellidos().isBlank() ||!usuario.getApellidos().matches(regexNombre)){
             throw new InvalidInputException("Solo se permiten letras en el campo apellidos");
         }
-        if (!usuario.getCorreo().matches(regexCorreo)){
+        if (usuario.getCorreo()==null||!usuario.getCorreo().matches(regexCorreo)){
             throw new InvalidInputException("Direccion de correo electronico invalida");
+        }
+        if (usuario.getTelefono()==null){
+            throw new InvalidInputException("No hay ningun numero de telefono");
         }
         String telefono=usuario.getTelefono().replaceAll("[.,\\s]", "");
         if (!telefono.matches("^(\\+\\d{1,3})?\\s?\\d{10}$")){
             throw new InvalidInputException("telefono invalido, ingrese un telefono valido EJ: +52 1234567890");
         }
+        if (usuario.getTelefono()==null){
+            throw new InvalidInputException("No hay documento de identidad");
+        }
         String doc= usuario.getDocumento().replaceAll("[.,\\s]", "");
         if (!doc.matches("^\\d+$")){
             throw new InvalidInputException("el campo documento debe ser llenado solo por numeros");
+        }
+        if (usuario.getContrasena()==null){
+            throw new InvalidInputException("No hay ninguna contraseña");
         }
         if (!usuario.getContrasena().matches(regexContrasena)){
             throw new InvalidInputException("""

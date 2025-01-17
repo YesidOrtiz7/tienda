@@ -7,7 +7,9 @@ import com.tienda.compras.dominio.Orden;
 import com.tienda.exceptionHandler.excepciones.InvalidInputException;
 import com.tienda.exceptionHandler.excepciones.ItemAlreadyExistException;
 import com.tienda.exceptionHandler.excepciones.SearchItemNotFoundException;
+import com.tienda.usuarios.aplicacion.puerto.entrada.CasoUsoObtenerUsuario;
 import com.tienda.usuarios.aplicacion.servicio.ServicioValidarUsuario;
+import com.tienda.usuarios.dominio.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +20,16 @@ import java.util.List;
 public class CompraService implements PuertoEntradaCompra {
     private PuertoSalidaCompra repository;
     private ServicioValidarUsuario validarUsuario;
+    private CasoUsoObtenerUsuario obtenerUsuario;
 
     public CompraService() {
     }
 
     @Autowired
-    public CompraService(PuertoSalidaCompra repository, ServicioValidarUsuario validarUsuario) {
+    public CompraService(PuertoSalidaCompra repository, ServicioValidarUsuario validarUsuario, CasoUsoObtenerUsuario obtenerUsuario) {
         this.repository = repository;
         this.validarUsuario = validarUsuario;
+        this.obtenerUsuario = obtenerUsuario;
     }
 
     @Override
@@ -42,17 +46,22 @@ public class CompraService implements PuertoEntradaCompra {
     }
 
     @Override
-    public Compra registrarCompra(Compra compra) throws ItemAlreadyExistException, SearchItemNotFoundException, InvalidInputException {
-        if (!validarUsuario.validarUsuarioExistePorDocumento(compra.getUsuario().getDocumento())){
+    public Compra registrarCompra(int idUsuario, List<Orden> ordenes) throws ItemAlreadyExistException, SearchItemNotFoundException, InvalidInputException {
+        if (!validarUsuario.validarUsuarioExistePorId(idUsuario)){
             throw new SearchItemNotFoundException("No se encontro el usuario");
         }
-        if (compra.getOrdenes().isEmpty()){
+        if (ordenes.isEmpty()){
             throw new InvalidInputException("No hay articulos en esta compra");
         }
+        Compra compra=new Compra();
+        Usuario usuario=obtenerUsuario.obtenerPorId(idUsuario);
+        compra.setUsuario(usuario);
+
         double totalCompra=0;
-        for (Orden i : compra.getOrdenes()){
+        for (Orden i : ordenes){
             totalCompra+=calcularTotalItem(i.getCantidad(),i.getProducto().getPrecio());
         }
+        compra.setOrdenes(ordenes);
         compra.setTotal(totalCompra);
         compra.setFecha(LocalDateTime.now());
         return repository.registrarCompra(compra);

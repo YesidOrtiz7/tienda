@@ -5,7 +5,7 @@ import com.tienda.exceptionHandler.excepciones.InvalidInputException;
 import com.tienda.exceptionHandler.excepciones.SearchItemNotFoundException;
 import com.tienda.publicaciones.aplicacion.puerto.salida.PublicacionPortOut;
 import com.tienda.publicaciones.dominio.Publicacion;
-import com.tienda.usuarios.aplicacion.puerto.entrada.CasoUsoObtenerUsuarioPorDocumento;
+import com.tienda.usuarios.aplicacion.puerto.entrada.CasoUsoObtenerUsuario;
 import com.tienda.usuarios.aplicacion.puerto.entrada.CasoUsoValidarUsuario;
 import com.tienda.usuarios.dominio.Usuario;
 import org.junit.jupiter.api.Assertions;
@@ -24,13 +24,13 @@ class PublicacionServiceTest {
     private ArrayList<Publicacion> publicaciones=new ArrayList<>();
     private Usuario usuario=new Usuario();
     private CasoUsoValidarUsuario validarUsuario;
-    private CasoUsoObtenerUsuarioPorDocumento obtenerUsuarioPorDocumentoMock;
+    private CasoUsoObtenerUsuario obtenerUsuarioPorDocumentoMock;
 
     @BeforeEach
     void setUp() {
         repository= Mockito.mock(PublicacionPortOut.class);
         validarUsuario=Mockito.mock(CasoUsoValidarUsuario.class);
-        obtenerUsuarioPorDocumentoMock=Mockito.mock(CasoUsoObtenerUsuarioPorDocumento.class);
+        obtenerUsuarioPorDocumentoMock=Mockito.mock(CasoUsoObtenerUsuario.class);
         usuario.setId(1);
         usuario.setDocumento("11111111");
         usuario.setNombres("Fabian");

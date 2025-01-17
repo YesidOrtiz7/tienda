@@ -41,6 +41,7 @@ public class CrearUsuarioRepository implements PuertoCrearUsuario {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Autowired
     public void setCuentaRepository(PuertoSalidaCuenta cuentaRepository) {
         this.cuentaRepository = cuentaRepository;
     }
@@ -53,6 +54,9 @@ public class CrearUsuarioRepository implements PuertoCrearUsuario {
         if (usuario.getCorreo().isBlank()){
             throw new InvalidInputException("El campo de correo esta vacio");
         }
+        if (repository.existsByDocumento(usuario.getDocumento())){
+            throw new InvalidInputException("Ya existe un usuario con este documento de identidad");
+        }
         usuario.setBloqueado(false);
         usuario.setEliminado(false);
         String passwordEncode= this.passwordEncoder.encode(usuario.getContrasena());
@@ -61,6 +65,7 @@ public class CrearUsuarioRepository implements PuertoCrearUsuario {
         UsuarioPersistenceModel persistenceModel =mapper.toPersistenceModel(usuario);
 
         persistenceModel=repository.save(persistenceModel);
+        System.out.println("Id del usuario registrado"+persistenceModel.getId());
         Cuenta cuentaUsuario=new Cuenta(persistenceModel.getId(), 0);
         cuentaRepository.crearCuenta(cuentaUsuario);
         return mapper.toDomainModel(persistenceModel);
