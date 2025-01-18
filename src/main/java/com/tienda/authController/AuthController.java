@@ -2,6 +2,8 @@ package com.tienda.authController;
 
 import com.tienda.administracion.adaptador.modelo.AdministradorPersistenceModel;
 import com.tienda.authController.model.LoginDTO;
+import com.tienda.exceptionHandler.excepciones.InvalidInputException;
+import com.tienda.exceptionHandler.excepciones.NotAuthorizedException;
 import com.tienda.exceptionHandler.excepciones.SearchItemNotFoundException;
 import com.tienda.userSecurityService.aplicacion.puerto.salida.FindAdminByDoc;
 import com.tienda.userSecurityService.aplicacion.puerto.salida.FindUsuarioByDoc;
@@ -39,7 +41,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestBody LoginDTO dto) throws SearchItemNotFoundException {
+    public ResponseEntity<Void> login(@RequestBody LoginDTO dto) throws SearchItemNotFoundException, InvalidInputException, NotAuthorizedException {
         // 1. Autenticar usuario con documento y contraseña
         UsernamePasswordAuthenticationToken login=new UsernamePasswordAuthenticationToken(dto.getDocumento(),dto.getContrasena());
         Authentication authentication=this.authenticationManager.authenticate(login);
@@ -51,26 +53,29 @@ public class AuthController {
             administrador=findAdminByDoc.findByDoc(dto.getDocumento());
             if (administrador.isEmpty()){
                 System.out.println("no se encontro");
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // Usuario no encontrado
+                throw new NotAuthorizedException(); // Usuario no encontrado
             }
         }
 
         // 3. Validar el código TOTP
         boolean isTotpValid = false;
         if (usuario.isPresent()){
+            if (dto.getTotpCode()==null||dto.getTotpCode().isBlank()){
+                throw new InvalidInputException("No se ha ingresado el codigo TOTP");
+            }
             isTotpValid=TotpUtils.validateTotp(usuario.get().getTotpSecret(), dto.getTotpCode());
         }
         if (administrador.isPresent()){
             isTotpValid=TotpUtils.validateTotp(administrador.get().getTotpSecret(), dto.getTotpCode());
         }
-        System.out.println("linea 66 "+isTotpValid+" usuario:"+usuario.isPresent()+" admin:"+administrador.isPresent());
+        System.out.println("AuthController, totp valido: "+isTotpValid+" usuario: "+usuario.isPresent()+" admin: "+administrador.isPresent());
         if (!isTotpValid) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); // TOTP inválido
         }
 
         // 4. Generar el JWT
         String jwt=this.jwtUtil.create(dto.getDocumento());
-        System.out.println(jwt);
+        //System.out.println(jwt);
 
         // 5. Retornar el JWT en la cabecera
         return ResponseEntity.ok().header(HttpHeaders.AUTHORIZATION,jwt).build();
