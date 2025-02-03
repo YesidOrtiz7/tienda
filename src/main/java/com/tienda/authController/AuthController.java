@@ -1,11 +1,9 @@
 package com.tienda.authController;
 
-import com.tienda.administracion.adaptador.modelo.AdministradorPersistenceModel;
 import com.tienda.authController.model.LoginDTO;
 import com.tienda.exceptionHandler.excepciones.InvalidInputException;
 import com.tienda.exceptionHandler.excepciones.NotAuthorizedException;
 import com.tienda.exceptionHandler.excepciones.SearchItemNotFoundException;
-import com.tienda.userSecurityService.aplicacion.puerto.salida.FindAdminByDoc;
 import com.tienda.userSecurityService.aplicacion.puerto.salida.FindUsuarioByDoc;
 import com.tienda.usuarios.adaptador.modelo.persistencia.UsuarioPersistenceModel;
 import com.tienda.webConfigSecurity.JwtUtil;
@@ -30,14 +28,12 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final FindUsuarioByDoc findUsuarioByDoc;
-    private final FindAdminByDoc findAdminByDoc;
 
     @Autowired
-    public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil, FindUsuarioByDoc findUsuarioByDoc, FindAdminByDoc findAdminByDoc) {
+    public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil, FindUsuarioByDoc findUsuarioByDoc) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.findUsuarioByDoc = findUsuarioByDoc;
-        this.findAdminByDoc = findAdminByDoc;
     }
 
     @PostMapping("/login")
@@ -47,28 +43,17 @@ public class AuthController {
         Authentication authentication=this.authenticationManager.authenticate(login);
 
         // 2. Recuperar el usuario autenticado
-        Optional<UsuarioPersistenceModel> usuario=findUsuarioByDoc.findByDoc(dto.getDocumento());
-        Optional<AdministradorPersistenceModel> administrador= Optional.empty();
-        if (usuario.isEmpty()){
-            administrador=findAdminByDoc.findByDoc(dto.getDocumento());
-            if (administrador.isEmpty()){
-                System.out.println("no se encontro");
-                throw new NotAuthorizedException(); // Usuario no encontrado
-            }
-        }
+        UsuarioPersistenceModel usuario=findUsuarioByDoc.findByDoc(dto.getDocumento())
+                .orElseThrow(()->new NotAuthorizedException());// Usuario no encontrado
 
         // 3. Validar el código TOTP
         boolean isTotpValid = false;
-        if (usuario.isPresent()){
-            if (dto.getTotpCode()==null||dto.getTotpCode().isBlank()){
-                throw new InvalidInputException("No se ha ingresado el codigo TOTP");
-            }
-            isTotpValid=TotpUtils.validateTotp(usuario.get().getTotpSecret(), dto.getTotpCode());
+        if (dto.getTotpCode()==null||dto.getTotpCode().isBlank()){
+            throw new InvalidInputException("No se ha ingresado el codigo TOTP");
         }
-        if (administrador.isPresent()){
-            isTotpValid=TotpUtils.validateTotp(administrador.get().getTotpSecret(), dto.getTotpCode());
-        }
-        System.out.println("AuthController, totp valido: "+isTotpValid+" usuario: "+usuario.isPresent()+" admin: "+administrador.isPresent());
+        isTotpValid=TotpUtils.validateTotp(usuario.getTotpSecret(), dto.getTotpCode());
+
+        System.out.println("AuthController, totp valido: "+isTotpValid+" usuario: "+usuario.getUserName());
         if (!isTotpValid) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); // TOTP inválido
         }

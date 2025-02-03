@@ -1,6 +1,5 @@
 package com.tienda.usuarios.aplicacion.servicio;
 
-import com.tienda.exceptionHandler.excepciones.SearchItemNotFoundException;
 import com.tienda.usuarios.aplicacion.puerto.entrada.CasoUsoValidarUsuario;
 import com.tienda.usuarios.aplicacion.puerto.salida.PuertoSalidaUsuario;
 import org.springframework.beans.factory.annotation.Autowired;

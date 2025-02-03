@@ -5,6 +5,10 @@ public class QrCodeUrl {
     public QrCodeUrl() {
     }
 
+    public QrCodeUrl(String qrCodeUrl) {
+        this.qrCodeUrl = qrCodeUrl;
+    }
+
     public String getQrCodeUrl() {
         return qrCodeUrl;
     }

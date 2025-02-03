@@ -23,18 +23,22 @@ public class DataInitializer {
     @PostConstruct
     public void initializeDatabase() {
         try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
-            // Verificar si la tabla tbl_administradores tiene registros
-            String checkRowCountQuery = "SELECT COUNT(*) FROM tbl_administradores";
-            Integer rowCount = jdbcTemplate.queryForObject(checkRowCountQuery, Integer.class);
+            // Verificar si la tabla tbl_usuarios tiene registros
+            String checkRowCountQuery = "SELECT COUNT(*) FROM tbl_usuarios";
+            Integer rowCountTbl_usuarios = jdbcTemplate.queryForObject(checkRowCountQuery, Integer.class);
 
-            if (rowCount == 0) {
+            Integer rowCountTbl_roles = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM tbl_roles", Integer.class);
+
+            if (rowCountTbl_usuarios == 0 && rowCountTbl_roles==0) {
                 // Si la tabla está vacía, ejecutar el script para inicializar datos
                 Resource dataResource = new ClassPathResource("data.sql");
                 ScriptUtils.executeSqlScript(connection, dataResource);
-                System.out.println("Datos inicializados desde data.sql porque la tabla estaba vacía.");
+                System.out.println("Inicializando datos de usuario por defecto.");
             } else {
-                System.out.println("La tabla tbl_administradores ya contiene datos. No se inicializan datos.");
+                System.out.println("Las tablas tbl_usuarios y tbl_roles ya contiene datos. No se inicializan datos.");
             }
+        } catch (NullPointerException e) {
+            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }

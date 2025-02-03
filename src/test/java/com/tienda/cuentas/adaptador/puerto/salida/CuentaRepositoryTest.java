@@ -19,18 +19,16 @@ import static org.mockito.Mockito.*;
 
 
 class CuentaRepositoryTest {
-    private Cuenta cuentaDomainModel=new Cuenta();
-    private CuentaEntity cuentaPersistenceModel=new CuentaEntity();
+    private final Cuenta cuentaDomainModel=new Cuenta();
+    private final CuentaEntity cuentaPersistenceModel=new CuentaEntity();
 
-    private Usuario usuarioDomainModel=new Usuario();
-    private UsuarioPersistenceModel usuarioPersistenceModel=new UsuarioPersistenceModel();
+    private final Usuario usuarioDomainModel=new Usuario();
+    private final UsuarioPersistenceModel usuarioPersistenceModel=new UsuarioPersistenceModel();
 
-    private CuentaCrudRepository interfaceRepository=mock(CuentaCrudRepository.class);
-    private UsuarioRepository usuarioRepository=mock(UsuarioRepository.class);
-    private UsuarioCrudRepository usuarioCrudRepository=mock(UsuarioCrudRepository.class);
+    private final CuentaCrudRepository interfaceRepository=mock(CuentaCrudRepository.class);
+    private final UsuarioCrudRepository usuarioCrudRepository=mock(UsuarioCrudRepository.class);
 
-    private MapperRepositoryToDomainCuenta mapper=mock(MapperRepositoryToDomainCuenta.class);
-    private MapperRepositoryToDomainUsuario mapperUsuario=mock(MapperRepositoryToDomainUsuario.class);
+    private final MapperRepositoryToDomainCuenta mapper=mock(MapperRepositoryToDomainCuenta.class);
 
     private CuentaRepository repository;
 
@@ -42,7 +40,7 @@ class CuentaRepositoryTest {
         cuentaPersistenceModel.setId_usuario(1);
         cuentaPersistenceModel.setSaldo(1000);
 
-        repository=new CuentaRepository(interfaceRepository,mapper,mapperUsuario,usuarioRepository,usuarioCrudRepository);
+        repository=new CuentaRepository(interfaceRepository,mapper,usuarioCrudRepository);
     }
 
     /*@Test
@@ -71,18 +69,16 @@ class CuentaRepositoryTest {
     @Test
     void crearCuenta_ElUsuarioYaTieneUnaCuenta() {
         try {
-            when(usuarioRepository.existById(cuentaPersistenceModel.getId_usuario())).thenReturn(true);
             when(interfaceRepository.existsById(cuentaPersistenceModel.getId_usuario())).thenReturn(true);
             when(interfaceRepository.save(cuentaPersistenceModel)).thenReturn(cuentaPersistenceModel);
             when(mapper.toDomainModel(cuentaPersistenceModel)).thenReturn(cuentaDomainModel);
             when(mapper.toPersistenceModel(cuentaDomainModel)).thenReturn(cuentaPersistenceModel);
+            when(usuarioCrudRepository.existsById(cuentaPersistenceModel.getId_usuario())).thenReturn(true);
 
             //obteniendo el usuario de la tabla de usuarios
-            when(mapperUsuario.toPersistenceModel(usuarioDomainModel)).thenReturn(usuarioPersistenceModel);
             when(usuarioCrudRepository.findById(cuentaPersistenceModel.getId_usuario())).thenReturn(Optional.of(usuarioPersistenceModel));
 
-            assertThrows(InvalidInputException.class,()->repository.crearCuenta(cuentaDomainModel));
-            verify(usuarioRepository,times(1)).existById(cuentaPersistenceModel.getId_usuario());
+            assertThrows(InvalidInputException.class,()->repository.crearCuenta(cuentaDomainModel.getId_usuario()));
             verify(interfaceRepository,times(1)).existsById(cuentaPersistenceModel.getId_usuario());
             verify(interfaceRepository,times(0)).save(cuentaPersistenceModel);
             verify(mapper,times(0)).toDomainModel(cuentaPersistenceModel);
@@ -95,17 +91,14 @@ class CuentaRepositoryTest {
     @Test
     void crearCuenta_ElUsuarioNoExiste() {
         try {
-            when(usuarioRepository.existById(cuentaPersistenceModel.getId_usuario())).thenReturn(false);
             when(interfaceRepository.existsById(cuentaPersistenceModel.getId_usuario())).thenReturn(false);
             when(interfaceRepository.save(cuentaPersistenceModel)).thenReturn(cuentaPersistenceModel);
             when(mapper.toDomainModel(cuentaPersistenceModel)).thenReturn(cuentaDomainModel);
             when(mapper.toPersistenceModel(cuentaDomainModel)).thenReturn(cuentaPersistenceModel);
             //obteniendo el usuario de la tabla de usuarios
-            when(mapperUsuario.toPersistenceModel(usuarioDomainModel)).thenReturn(usuarioPersistenceModel);
             when(usuarioCrudRepository.findById(cuentaPersistenceModel.getId_usuario())).thenReturn(Optional.of(usuarioPersistenceModel));
 
-            assertThrows(SearchItemNotFoundException.class,()->repository.crearCuenta(cuentaDomainModel));
-            verify(usuarioRepository,times(1)).existById(cuentaPersistenceModel.getId_usuario());
+            assertThrows(SearchItemNotFoundException.class,()->repository.crearCuenta(cuentaDomainModel.getId_usuario()));
             verify(interfaceRepository,times(0)).existsById(cuentaPersistenceModel.getId_usuario());
             verify(interfaceRepository,times(0)).save(cuentaPersistenceModel);
             verify(mapper,times(0)).toDomainModel(cuentaPersistenceModel);

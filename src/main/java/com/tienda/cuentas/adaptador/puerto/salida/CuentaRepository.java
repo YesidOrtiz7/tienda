@@ -6,9 +6,7 @@ import com.tienda.cuentas.dominio.Cuenta;
 import com.tienda.exceptionHandler.excepciones.InvalidInputException;
 import com.tienda.exceptionHandler.excepciones.SearchItemNotFoundException;
 import com.tienda.usuarios.adaptador.modelo.persistencia.UsuarioPersistenceModel;
-import com.tienda.usuarios.adaptador.puerto.salida.persistencia.MapperRepositoryToDomainUsuario;
 import com.tienda.usuarios.adaptador.puerto.salida.persistencia.UsuarioCrudRepository;
-import com.tienda.usuarios.adaptador.puerto.salida.persistencia.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -16,32 +14,28 @@ import org.springframework.stereotype.Repository;
 public class CuentaRepository implements PuertoSalidaCuenta {
     private CuentaCrudRepository repository;
     private MapperRepositoryToDomainCuenta mapper;
-    private MapperRepositoryToDomainUsuario mapperUsuario;
-    private UsuarioRepository usuarioRepository;
     private UsuarioCrudRepository usuarioCrudRepository;
 
     public CuentaRepository() {
     }
 
     @Autowired
-    public CuentaRepository(CuentaCrudRepository repository, MapperRepositoryToDomainCuenta mapper, MapperRepositoryToDomainUsuario mapperUsuario, UsuarioRepository usuarioRepository, UsuarioCrudRepository usuarioCrudRepository) {
+    public CuentaRepository(CuentaCrudRepository repository, MapperRepositoryToDomainCuenta mapper, UsuarioCrudRepository usuarioCrudRepository) {
         this.repository = repository;
         this.mapper = mapper;
-        this.mapperUsuario = mapperUsuario;
-        this.usuarioRepository = usuarioRepository;
         this.usuarioCrudRepository = usuarioCrudRepository;
     }
 
     @Override
-    public Cuenta crearCuenta(Cuenta cuenta) throws SearchItemNotFoundException, InvalidInputException {
-        if (!usuarioRepository.existById(cuenta.getId_usuario())){
+    public Cuenta crearCuenta(int id) throws SearchItemNotFoundException, InvalidInputException {
+        if (!usuarioCrudRepository.existsById(id)){
             throw new SearchItemNotFoundException("No existe el cliente");
         }
-        if (repository.existsById(cuenta.getId_usuario())){
+        if (repository.existsById(id)){
             throw new InvalidInputException("Ya existe una cuenta para este usuario");
         }
 
-        UsuarioPersistenceModel usuario= usuarioCrudRepository.findById(cuenta.getId_usuario())
+        UsuarioPersistenceModel usuario= usuarioCrudRepository.findById(id)
                 .orElseThrow(() -> new SearchItemNotFoundException("No se pudo encontrar el usuario"));
         if (usuario == null) {
             throw new SearchItemNotFoundException("No se pudo encontrar el usuario");
@@ -70,5 +64,10 @@ public class CuentaRepository implements PuertoSalidaCuenta {
         }
         CuentaEntity response= repository.save(mapper.toPersistenceModel(cuenta));
         return mapper.toDomainModel(response);
+    }
+
+    @Override
+    public boolean existById(int id) {
+        return repository.existsById(id);
     }
 }

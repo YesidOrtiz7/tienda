@@ -1,29 +1,39 @@
 package com.tienda.usuarios.aplicacion.servicio;
 
 import com.tienda.exceptionHandler.excepciones.InvalidInputException;
+import com.tienda.exceptionHandler.excepciones.ItemAlreadyExistException;
 import com.tienda.exceptionHandler.excepciones.SearchItemNotFoundException;
-import com.tienda.usuarios.aplicacion.puerto.entrada.CasoUsoCrearUsuario;
-import com.tienda.usuarios.aplicacion.puerto.salida.PuertoCrearUsuario;
+import com.tienda.usuarios.aplicacion.puerto.entrada.UsuarioPortIn;
+import com.tienda.usuarios.aplicacion.puerto.salida.InhabilitarUsuarioQuery_portOut;
+import com.tienda.usuarios.aplicacion.puerto.salida.PuertoSalidaUsuario;
+import com.tienda.usuarios.aplicacion.puerto.salida.UsuariosPagSort_portOut;
 import com.tienda.usuarios.dominio.Usuario;
 import com.tienda.webConfigSecurity.totp.QrCodeUtils;
 import com.tienda.webConfigSecurity.totp.TotpUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ServicioCrearUsuario implements CasoUsoCrearUsuario {
-    private PuertoCrearUsuario repository;
+public class ServicioUsuario implements UsuarioPortIn {
+    private final PuertoSalidaUsuario repository;
+    private final InhabilitarUsuarioQuery_portOut inhabilitarUsuarioQuery;
+    private final UsuariosPagSort_portOut pagSortPortOut;
     private final String regexContrasena = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[\\-/*@#$%^&+=!])\\S{8,}$";
     private final String regexNombre="^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$";
     private final String regexCorreo = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+    private final String regexTelefono="^(\\+\\d{1,3})?\\s?\\d{10}$";
 
     @Autowired
-    public void setRepository(PuertoCrearUsuario repository) {
+    public ServicioUsuario(PuertoSalidaUsuario repository, InhabilitarUsuarioQuery_portOut inhabilitarUsuarioQuery, UsuariosPagSort_portOut pagSortPortOut) {
         this.repository = repository;
+        this.inhabilitarUsuarioQuery = inhabilitarUsuarioQuery;
+        this.pagSortPortOut = pagSortPortOut;
     }
 
     @Override
-    public String crearUsuario(Usuario usuario) throws InvalidInputException, SearchItemNotFoundException {
+    public String crearUsuario(Usuario usuario) throws InvalidInputException, SearchItemNotFoundException, ItemAlreadyExistException {
         if (usuario.getNombres()==null||usuario.getNombres().isBlank() || !usuario.getNombres().matches(regexNombre)){
             throw new InvalidInputException("Solo se permiten letras en el campo nombres");
         }
@@ -37,7 +47,7 @@ public class ServicioCrearUsuario implements CasoUsoCrearUsuario {
             throw new InvalidInputException("No hay ningun numero de telefono");
         }
         String telefono=usuario.getTelefono().replaceAll("[.,\\s]", "");
-        if (!telefono.matches("^(\\+\\d{1,3})?\\s?\\d{10}$")){
+        if (!telefono.matches(regexTelefono)){
             throw new InvalidInputException("telefono invalido, ingrese un telefono valido EJ: +52 1234567890");
         }
         if (usuario.getTelefono()==null){
@@ -65,12 +75,57 @@ public class ServicioCrearUsuario implements CasoUsoCrearUsuario {
         String totpSecret = TotpUtils.generateSecret();
         usuario.setTotpSecret(totpSecret);
 
-        Usuario response=repository.crearUsuario(usuario);
+        Usuario response=this.repository.crearUsuario(usuario,2);
 
         return QrCodeUtils.generateQrCodeUrl(
                 response.getDocumento(),
                 response.getTotpSecret(),
                 "Tienda"
         );
+    }
+
+    /**bloquea al usuario que contenga el id especificado, cuando el segundo valor
+     *  es false el usuario es bloqueado, cuando es true  el usuario es desbloqueado*/
+    @Override
+    @Secured("ROLE_ADMIN")
+    public void bloquear(int id, boolean habilitado) throws SearchItemNotFoundException {
+        if (!this.repository.existById(id)){
+            throw new SearchItemNotFoundException("El usuario no existe");
+        }
+        if (habilitado){
+            this.inhabilitarUsuarioQuery.desbloquear(id);
+        }else {
+            this.inhabilitarUsuarioQuery.bloquear(id);
+        }
+    }
+
+    @Override
+    public Usuario obtenerPorDocumento(String documento) throws SearchItemNotFoundException {
+        return this.repository.getByDocument(documento);
+    }
+
+    @Override
+    public Usuario obtenerPorId(int id) throws SearchItemNotFoundException {
+        return this.repository.getById(id);
+    }
+
+    @Override
+    public boolean existePorId(int id) {
+        return this.repository.existById(id);
+    }
+
+    @Override
+    public boolean existByDocumento(String documento) {
+        return this.repository.existByDocumento(documento);
+    }
+
+    @Override
+    public boolean eliminarPorId(int id) throws SearchItemNotFoundException {
+        return this.repository.deleteById(id);
+    }
+
+    @Override
+    public Page<Usuario> obtenerTodos(int page, int elements) {
+        return pagSortPortOut.obtenerTodos(page,elements);
     }
 }

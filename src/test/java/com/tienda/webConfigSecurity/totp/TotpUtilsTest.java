@@ -14,11 +14,6 @@ class TotpUtilsTest {
     }
 
     @Test
-    void generateQrUrl() {
-        System.out.println(TotpUtils.generateQrUrl("202411","UEC3MJBRFYDG3YCR","Tienda"));
-    }
-
-    @Test
     void validateTotp() {
     }
 }

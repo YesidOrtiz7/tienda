@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ServicioObtenerUsuario implements CasoUsoObtenerUsuario {
-    private PuertoSalidaUsuario repository;
+    private final PuertoSalidaUsuario repository;
 
     @Autowired
     public ServicioObtenerUsuario(PuertoSalidaUsuario repository) {

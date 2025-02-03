@@ -8,7 +8,7 @@ spring:
     #schema: classpath:schema.sql
     url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/tienda
     username: root
-    password:
+    password: mi_contrasena
   jpa:
     hibernate.ddl-auto: update
     generate-ddl: true
@@ -16,3 +16,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+#logging:
+#  level:
+#    org:
+#      springframework: DEBUG

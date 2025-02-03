@@ -1,5 +1,6 @@
 package com.tienda.usuarios.adaptador.puerto.salida.persistencia;
 
+import com.tienda.cuentas.adaptador.puerto.salida.MapperRepositoryToDomainCuenta;
 import com.tienda.usuarios.adaptador.modelo.persistencia.UsuarioPersistenceModel;
 import com.tienda.usuarios.adaptador.puerto.salida.persistencia.rol.MapperRepositoryToDomainRol;
 import com.tienda.usuarios.dominio.Usuario;
@@ -8,7 +9,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
-@Mapper(componentModel = "spring", uses = {MapperRepositoryToDomainRol.class})
+@Mapper(componentModel = "spring", uses = {MapperRepositoryToDomainRol.class, MapperRepositoryToDomainCuenta.class})
 public interface MapperRepositoryToDomainUsuario {
     @Mappings({
         @Mapping(source = "id",target = "id"),

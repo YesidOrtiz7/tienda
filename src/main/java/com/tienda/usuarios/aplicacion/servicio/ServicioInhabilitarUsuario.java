@@ -21,14 +21,15 @@ public class ServicioInhabilitarUsuario implements CasoUsoInhabilitarUsuario {
 
     @Override
     @Secured("ROLE_ADMIN")
-    public boolean bloquear(int id, boolean habilitar) throws SearchItemNotFoundException {
+    public void bloquear(int id, boolean habilitar) throws SearchItemNotFoundException {
         if (!repository.existById(id)){
             throw new SearchItemNotFoundException("El usuario no existe");
         }
         if (habilitar){
             queryPortOut.desbloquear(id);
+        }else {
+            queryPortOut.bloquear(id);
         }
-        queryPortOut.bloquear(id);
-        return true;
+
     }
 }

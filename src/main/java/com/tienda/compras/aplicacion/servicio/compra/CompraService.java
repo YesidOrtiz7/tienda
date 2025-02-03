@@ -7,8 +7,7 @@ import com.tienda.compras.dominio.Orden;
 import com.tienda.exceptionHandler.excepciones.InvalidInputException;
 import com.tienda.exceptionHandler.excepciones.ItemAlreadyExistException;
 import com.tienda.exceptionHandler.excepciones.SearchItemNotFoundException;
-import com.tienda.usuarios.aplicacion.puerto.entrada.CasoUsoObtenerUsuario;
-import com.tienda.usuarios.aplicacion.servicio.ServicioValidarUsuario;
+import com.tienda.usuarios.aplicacion.puerto.entrada.UsuarioPortIn;
 import com.tienda.usuarios.dominio.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,18 +17,13 @@ import java.util.List;
 
 @Service
 public class CompraService implements PuertoEntradaCompra {
-    private PuertoSalidaCompra repository;
-    private ServicioValidarUsuario validarUsuario;
-    private CasoUsoObtenerUsuario obtenerUsuario;
-
-    public CompraService() {
-    }
+    private final PuertoSalidaCompra repository;
+    private final UsuarioPortIn usuarioRepository;
 
     @Autowired
-    public CompraService(PuertoSalidaCompra repository, ServicioValidarUsuario validarUsuario, CasoUsoObtenerUsuario obtenerUsuario) {
+    public CompraService(PuertoSalidaCompra repository, UsuarioPortIn usuarioRepository) {
         this.repository = repository;
-        this.validarUsuario = validarUsuario;
-        this.obtenerUsuario = obtenerUsuario;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Override
@@ -39,7 +33,7 @@ public class CompraService implements PuertoEntradaCompra {
 
     @Override
     public List<Compra> obtenerComprasPorIdUsuario(int id_usuario) throws SearchItemNotFoundException {
-        if (!validarUsuario.validarUsuarioExistePorId(id_usuario)){
+        if (!usuarioRepository.existePorId(id_usuario)){
             throw new SearchItemNotFoundException("No existe el usuario");
         }
         return repository.obtenerComprasPorIdUsuario(id_usuario);
@@ -47,14 +41,14 @@ public class CompraService implements PuertoEntradaCompra {
 
     @Override
     public Compra registrarCompra(int idUsuario, List<Orden> ordenes) throws ItemAlreadyExistException, SearchItemNotFoundException, InvalidInputException {
-        if (!validarUsuario.validarUsuarioExistePorId(idUsuario)){
+        if (!usuarioRepository.existePorId(idUsuario)){
             throw new SearchItemNotFoundException("No se encontro el usuario");
         }
         if (ordenes.isEmpty()){
             throw new InvalidInputException("No hay articulos en esta compra");
         }
         Compra compra=new Compra();
-        Usuario usuario=obtenerUsuario.obtenerPorId(idUsuario);
+        Usuario usuario= usuarioRepository.obtenerPorId(idUsuario);
         compra.setUsuario(usuario);
 
         double totalCompra=0;

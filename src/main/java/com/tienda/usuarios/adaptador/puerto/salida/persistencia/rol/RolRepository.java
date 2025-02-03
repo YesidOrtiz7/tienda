@@ -14,11 +14,8 @@ import java.util.List;
 
 @Repository
 public class RolRepository implements PuertoRol {
-    private RolCrudRepository repository;
-    private MapperRepositoryToDomainRol mapper;
-
-    public RolRepository() {
-    }
+    private final RolCrudRepository repository;
+    private final MapperRepositoryToDomainRol mapper;
 
     @Autowired
     public RolRepository(RolCrudRepository repository, MapperRepositoryToDomainRol mapper) {
