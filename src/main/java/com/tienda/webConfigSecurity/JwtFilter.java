@@ -36,6 +36,7 @@ public class JwtFilter extends OncePerRequestFilter {
         //validamos que la autorizacion en el header de la peticion sea valida
         String authHeader=request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authHeader==null || authHeader.isEmpty() || !authHeader.startsWith("Bearer")){
+            System.out.println("usuario sin autorizacion");
             filterChain.doFilter(request,response);
             return;
         }
@@ -43,12 +44,14 @@ public class JwtFilter extends OncePerRequestFilter {
         //validamos que el jwt sea valido
         String jwt=authHeader.split(" ")[1].trim();
         if (!this.jwtUtil.isValid(jwt)){
+            System.out.println("jwt no valido");
             filterChain.doFilter(request,response);
             return;
         }
         //cargar el usuario del userDetailsService (verificar que no este bloqueado)
         String userName=this.jwtUtil.getUserName(jwt);
         User user= (User) this.userDetailsService.loadUserByUsername(userName);
+        System.out.println("JwtFilter nombre usuario: "+user.getUsername());
 
         //cargar al usuario en el contexto de seguridad de spring
         UsernamePasswordAuthenticationToken authenticationToken=new UsernamePasswordAuthenticationToken(

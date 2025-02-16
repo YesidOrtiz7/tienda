@@ -4,7 +4,6 @@ import com.tienda.publicaciones.adaptador.modelo.IdRequest;
 import com.tienda.exceptionHandler.excepciones.InvalidInputException;
 import com.tienda.exceptionHandler.excepciones.ItemAlreadyExistException;
 import com.tienda.exceptionHandler.excepciones.SearchItemNotFoundException;
-import com.tienda.publicaciones.adaptador.modelo.PublicacionControllerModel;
 import com.tienda.publicaciones.aplicacion.puerto.entrada.PublicacionPortIn;
 import com.tienda.publicaciones.dominio.Publicacion;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

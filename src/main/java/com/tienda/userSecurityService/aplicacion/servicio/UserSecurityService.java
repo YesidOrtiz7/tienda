@@ -29,6 +29,7 @@ public class UserSecurityService implements UserDetailsService {
         UsuarioPersistenceModel usuario=usuarioRepository.findByDoc(username).orElseThrow(()->new UsernameNotFoundException("No se encontro el usuario"));
         ArrayList<String> roles=new ArrayList<>();
         usuario.getUsuarioRoles().forEach((i)-> roles.add(i.getRol().getNombre()));
+        System.out.println("user security service, roles: "+roles.toString());
         return User.builder()
                 .username(usuario.getUserName())
                 .password(usuario.getContrasena())
