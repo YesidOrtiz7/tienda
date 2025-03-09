@@ -36,7 +36,7 @@ public class JwtFilter extends OncePerRequestFilter {
         //validamos que la autorizacion en el header de la peticion sea valida
         String authHeader=request.getHeader(HttpHeaders.AUTHORIZATION);
         if (authHeader==null || authHeader.isEmpty() || !authHeader.startsWith("Bearer")){
-            System.out.println("usuario sin autorizacion");
+            System.out.println("usuario sin autorizacion "+request.getRequestURI());
             filterChain.doFilter(request,response);
             return;
         }
