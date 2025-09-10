@@ -21,5 +21,9 @@ public interface MapperControllerToDomainUsuario_CrearUsuario {
     CrearUsuario_ControllerModel toControllerModel(Usuario domainModel);
 
     @InheritInverseConfiguration
+    @Mapping(target = "bloqueado",ignore = true)
+    @Mapping(target = "totpSecret",ignore = true)
+    @Mapping(target = "eliminado",ignore = true)
+    @Mapping(target = "roles",ignore = true)
     Usuario toDomainModel(CrearUsuario_ControllerModel controllerModel);
 }

@@ -16,7 +16,6 @@ public class Usuario {
     private boolean bloqueado;
     private boolean eliminado;
     private List<Rol> roles;
-    private Cuenta cuenta;
 
 
     public Usuario() {
@@ -116,13 +115,5 @@ public class Usuario {
 
     public List<Rol> getRoles() {
         return roles;
-    }
-
-    public Cuenta getCuenta() {
-        return cuenta;
-    }
-
-    public void setCuenta(Cuenta cuenta) {
-        this.cuenta = cuenta;
     }
 }

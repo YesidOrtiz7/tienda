@@ -1,9 +1,11 @@
 package com.tienda.publicaciones.dominio;
 
 import com.tienda.categoriasProductos.dominio.Categoria;
+import com.tienda.multimedia.domino.ImagenProductoDomainModel;
 import com.tienda.usuarios.dominio.Usuario;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Publicacion {
     private int id;
@@ -15,6 +17,7 @@ public class Publicacion {
     private LocalDateTime fechaPublicacion;
     private Usuario usuario;
     private boolean visible;
+    private List<ImagenProductoDomainModel> imagenes;
 
     public Publicacion(int id, String tituloPublicacion, String descripcion, double precio, Categoria categoria, int cantidadDisponible, LocalDateTime fechaPublicacion) {
         this.id = id;
@@ -26,7 +29,7 @@ public class Publicacion {
         this.fechaPublicacion = fechaPublicacion;
     }
 
-    public Publicacion(int id, String tituloPublicacion, String descripcion, double precio, Categoria categoria, int cantidadDisponible, LocalDateTime fechaPublicacion, Usuario usuario, boolean visible) {
+    public Publicacion(int id, String tituloPublicacion, String descripcion, double precio, Categoria categoria, int cantidadDisponible, LocalDateTime fechaPublicacion, Usuario usuario, boolean visible, List<ImagenProductoDomainModel> imagenes) {
         this.id = id;
         this.tituloPublicacion = tituloPublicacion;
         this.descripcion = descripcion;
@@ -36,6 +39,7 @@ public class Publicacion {
         this.fechaPublicacion = fechaPublicacion;
         this.usuario = usuario;
         this.visible = visible;
+        this.imagenes = imagenes;
     }
 
     public Publicacion() {
@@ -111,5 +115,13 @@ public class Publicacion {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public List<ImagenProductoDomainModel> getImagenes() {
+        return imagenes;
+    }
+
+    public void setImagenes(List<ImagenProductoDomainModel> imagenes) {
+        this.imagenes = imagenes;
     }
 }

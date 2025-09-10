@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public interface PublicacionPortOut {
     ArrayList<Publicacion> obtenerPublicaciones();
     Publicacion obtenerPublicacion(int id) throws SearchItemNotFoundException;
-    //boolean existePublicacion(int id);
+    boolean existePublicacion(int id);
     Publicacion crearPublicacion(Publicacion publicacion) throws ItemAlreadyExistException, SearchItemNotFoundException;
     Publicacion actualizarPublicacion(Publicacion publicacion) throws SearchItemNotFoundException;
     boolean eliminarPublicacion(int id) throws SearchItemNotFoundException;

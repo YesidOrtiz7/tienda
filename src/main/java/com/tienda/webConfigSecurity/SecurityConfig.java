@@ -40,6 +40,8 @@ public class SecurityConfig {
                     * las rutas del arbol a partir del sufijo. Las autorizaciones deben ir de lo general a lo especifico*/
                     customizeRequest.requestMatchers("/api/auth/**").permitAll();
 
+                    customizeRequest.requestMatchers(HttpMethod.GET,"/imagenes/*").permitAll();
+
                     customizeRequest.requestMatchers(HttpMethod.POST,"/productos/*").hasAnyRole("USUARIO");
                     customizeRequest.requestMatchers(HttpMethod.DELETE,"/productos/*").hasRole("ADMIN");
                     customizeRequest.requestMatchers(HttpMethod.GET,"/productos/*").permitAll();

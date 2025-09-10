@@ -29,6 +29,10 @@ public class UsuarioController {
         this.servicioUsuario = servicioUsuario;
         this.servicioInhabilitarUsuario = servicioInhabilitarUsuario;
     }
+    @GetMapping("/todos")
+    public ResponseEntity<Page<UsuarioBasicData>> obtenerUsuarios(@RequestParam int page, @RequestParam int elements){
+        return ResponseEntity.ok(this.servicioUsuario.obtenerTodos(page, elements).map(mapperBasicData::toBasicDataModel));
+    }
 
     @PostMapping("/nuevousuario")
     public ResponseEntity<QrCodeUrl> crearUsuario(@RequestBody CrearUsuario_ControllerModel user) throws InvalidInputException, SearchItemNotFoundException, ItemAlreadyExistException {

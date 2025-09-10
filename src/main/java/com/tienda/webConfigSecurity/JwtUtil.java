@@ -3,6 +3,7 @@ package com.tienda.webConfigSecurity;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTVerificationException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
@@ -13,12 +14,15 @@ public class JwtUtil {
     private static String SECRET_KEY="tiendaAplicacion2024";
     private static Algorithm ALGORITHM=Algorithm.HMAC256(SECRET_KEY);
 
+    @Value("${jwt-util.time-in-minutes}")
+    private int tiempo;
+
     public String create(String username){
         return JWT.create()
                 .withSubject(username)
                 .withIssuer("aplicacion_tienda")//quien firma
                 .withIssuedAt(new Date())//cuando se firmo el token
-                .withExpiresAt(new Date(System.currentTimeMillis()+ TimeUnit.MINUTES.toMillis(8)))//fecha en la que se vence
+                .withExpiresAt(new Date(System.currentTimeMillis()+ TimeUnit.MINUTES.toMillis(tiempo)))//fecha en la que se vence
                 .sign(ALGORITHM);//firmado con este algoritmo
     }
     public boolean isValid(String jwt){

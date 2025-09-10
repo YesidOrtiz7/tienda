@@ -51,6 +51,11 @@ public class PublicacionesRepository implements PublicacionPortOut {
     }
 
     @Override
+    public boolean existePublicacion(int id) {
+        return repository.existsById(id);
+    }
+
+    @Override
     public Publicacion crearPublicacion(Publicacion publicacion) throws ItemAlreadyExistException, SearchItemNotFoundException {
         if (!repositoryCategoria.existePorId(publicacion.getCategoria().getId())){
             throw new SearchItemNotFoundException("La categoria no existe");

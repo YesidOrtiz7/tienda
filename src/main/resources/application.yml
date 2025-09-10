@@ -13,6 +13,12 @@ spring:
     hibernate.ddl-auto: update
     generate-ddl: true
     show-sql: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      max-request-size: 20MB
+      #max-request-size: 2MB
 #    properties:
 #      hibernate:
 #        format_sql: true
@@ -21,3 +27,7 @@ spring:
 #  level:
 #    org:
 #      springframework: DEBUG
+jwt-util:
+  time-in-minutes: 10
+file:
+  upload-dir: /app/images

@@ -22,9 +22,11 @@ public interface MapperRepositoryToDomainUsuario {
         @Mapping(source = "totpSecret",target = "totpSecret"),
         @Mapping(source = "bloqueado",target = "bloqueado"),
         @Mapping(source = "eliminado",target = "eliminado"),
-        @Mapping(source = "cuenta",target = "cuenta"),
+        @Mapping(target = "cuenta",ignore = true),
+        @Mapping(target = "compras",ignore = true)
     })
     UsuarioPersistenceModel toPersistenceModel(Usuario usuario);
     @InheritInverseConfiguration
+    @Mapping(target = "roles",ignore = true)
     Usuario toDomainModel(UsuarioPersistenceModel usuario);
 }

@@ -13,4 +13,5 @@ public interface PublicacionPortIn {
     Publicacion crearPublicacion(Publicacion publicacion) throws InvalidInputException, ItemAlreadyExistException, SearchItemNotFoundException;
     Publicacion actualizarPublicacion(Publicacion publicacion) throws InvalidInputException, SearchItemNotFoundException;
     boolean eliminarPublicacion(int id) throws SearchItemNotFoundException;
+    boolean existePublicacion(int id);
 }

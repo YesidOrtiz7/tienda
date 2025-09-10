@@ -74,7 +74,9 @@ public class PublicacionService implements PublicacionPortIn {
          * usuario*/
         publicacion.setFechaPublicacion(LocalDateTime.now());
         publicacion.setVisible(true);
-        return portOut.crearPublicacion(publicacion);
+        Publicacion response=portOut.crearPublicacion(publicacion);
+        System.out.println("publicacionservice 78 id de la publicacion registrada: "+response.getId());
+        return response;
     }
 
     @Override
@@ -105,5 +107,10 @@ public class PublicacionService implements PublicacionPortIn {
     @Override
     public boolean eliminarPublicacion(int id) throws SearchItemNotFoundException {
         return portOut.eliminarPublicacion(id);
+    }
+
+    @Override
+    public boolean existePublicacion(int id) {
+        return portOut.existePublicacion(id);
     }
 }

@@ -4,6 +4,7 @@ import com.tienda.compras.aplicacion.puerto.salida.compra.PuertoSalidaCompra;
 import com.tienda.compras.dominio.Compra;
 import com.tienda.exceptionHandler.excepciones.ItemAlreadyExistException;
 import com.tienda.exceptionHandler.excepciones.SearchItemNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class CompraRepository implements PuertoSalidaCompra {
     public CompraRepository() {
     }
 
+    @Autowired
     public CompraRepository(MapperRepositoryToDomainCompra mapper, CompraCrudRepository repository) {
         this.mapper = mapper;
         this.repository = repository;

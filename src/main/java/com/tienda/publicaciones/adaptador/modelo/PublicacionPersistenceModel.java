@@ -1,10 +1,12 @@
 package com.tienda.publicaciones.adaptador.modelo;
 
 import com.tienda.categoriasProductos.adaptador.modelo.CategoriaPersistenceModel;
+import com.tienda.multimedia.adaptador.modelo.persistencia.ImagenProductoPersistenceModel;
 import com.tienda.usuarios.adaptador.modelo.persistencia.UsuarioPersistenceModel;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name="tbl_publicaciones")
@@ -30,6 +32,8 @@ public class PublicacionPersistenceModel {
     private UsuarioPersistenceModel usuario;
     @Column(name = "visible",nullable = false)
     private boolean visible;
+    @OneToMany(mappedBy = "publicacion", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ImagenProductoPersistenceModel> imagenes;
 
     /*@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "categoria_id",referencedColumnName = "id_categoria",insertable = false,updatable = false)
@@ -137,5 +141,13 @@ public class PublicacionPersistenceModel {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public List<ImagenProductoPersistenceModel> getImagenes() {
+        return imagenes;
+    }
+
+    public void setImagenes(List<ImagenProductoPersistenceModel> imagenes) {
+        this.imagenes = imagenes;
     }
 }
