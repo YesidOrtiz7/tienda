@@ -11,16 +11,29 @@ import org.springframework.stereotype.Repository;
 public class UsuariosPagSortImpl implements UsuariosPagSort_portOut {
     private final UsuariosPagSortInterface repository;
     private final MapperRepositoryToDomainUsuario mapper;
-
+    /*-----------------------------------------------------------------------------*/
     @Autowired
     public UsuariosPagSortImpl(UsuariosPagSortInterface repository, MapperRepositoryToDomainUsuario mapper) {
         this.repository = repository;
         this.mapper = mapper;
     }
+    /*-----------------------------------------------------------------------------*/
 
     @Override
     public Page<Usuario> obtenerTodos(int page, int elements) {
         return repository.findAll(PageRequest.of(page,elements))
+                .map(mapper::toDomainModel);
+    }
+
+    @Override
+    public Page<Usuario> obtenerUsuarios(int page, int elements) {
+        return repository.findAllUsuarios(PageRequest.of(page,elements))
+                .map(mapper::toDomainModel);
+    }
+
+    @Override
+    public Page<Usuario> obtenerAdministradores(int page, int elements) {
+        return repository.findAllAdministradores(PageRequest.of(page,elements))
                 .map(mapper::toDomainModel);
     }
 }

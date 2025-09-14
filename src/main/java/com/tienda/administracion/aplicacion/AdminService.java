@@ -50,8 +50,7 @@ public class AdminService implements PuertoEntradaAdmin {
 
     @Override
     public Page<Usuario> obtenerAdmins(int page, int elements) {
-        return pagSortPortOut.obtenerTodos(page, elements);
-        //return null;
+        return pagSortPortOut.obtenerAdministradores(page, elements);
     }
 
     @Override

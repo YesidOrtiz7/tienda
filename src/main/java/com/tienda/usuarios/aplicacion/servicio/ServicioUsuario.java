@@ -126,6 +126,6 @@ public class ServicioUsuario implements UsuarioPortIn {
 
     @Override
     public Page<Usuario> obtenerTodos(int page, int elements) {
-        return pagSortPortOut.obtenerTodos(page,elements);
+        return pagSortPortOut.obtenerUsuarios(page,elements);
     }
 }

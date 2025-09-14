@@ -61,8 +61,4 @@ public class UsuarioController {
         );
         return ResponseEntity.ok(response);
     }
-    public ResponseEntity<Page<UsuarioBasicData>> consultarTodos(@RequestParam(defaultValue = "0") int page,
-                                               @RequestParam(defaultValue = "10") int elements){
-        return ResponseEntity.ok(this.servicioUsuario.obtenerTodos(page, elements).map(mapperBasicData::toBasicDataModel));
-    }
 }
