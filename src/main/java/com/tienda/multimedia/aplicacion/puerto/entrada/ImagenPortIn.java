@@ -11,6 +11,7 @@ import java.util.List;
 public interface ImagenPortIn {
     List<ImagenProductoDomainModel> consultarImagenesPorPublicacion(int idPublicacion);
     Resource consultarImagenPorId(int idImagen) throws SearchItemNotFoundException;
+    Resource consultarImagenPorNombre(String nombre) throws SearchItemNotFoundException;
     boolean guardarImagenes(List<MultipartFile> imagenes, int idPublicacion) throws ItemAlreadyExistException, SearchItemNotFoundException;
     boolean eliminarImagenPorId(int idImagen) throws SearchItemNotFoundException;
     boolean imagenExiste(int idImagen);

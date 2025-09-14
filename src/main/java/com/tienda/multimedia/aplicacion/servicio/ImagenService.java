@@ -57,6 +57,22 @@ public class ImagenService implements ImagenPortIn {
     }
 
     @Override
+    public Resource consultarImagenPorNombre(String nombre) throws SearchItemNotFoundException {
+        String nombreArchivo=repository.consultarImagenPorNombre(nombre).getNombreArchivo();
+        try {
+            Path filePath=Paths.get(uploadDir).resolve(nombreArchivo);
+            Resource resource=new UrlResource(filePath.toUri());
+            if (resource.exists()){
+                return resource;
+            } else {
+                return null;
+            }
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public boolean guardarImagenes(List<MultipartFile> imagenes, int idPublicacion) throws ItemAlreadyExistException, SearchItemNotFoundException {
 
         int contador=1;

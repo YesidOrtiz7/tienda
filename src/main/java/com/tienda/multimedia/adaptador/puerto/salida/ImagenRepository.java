@@ -39,7 +39,7 @@ public class ImagenRepository implements ImagenPortOut {
     @Override
     public List<ImagenProductoDomainModel> consultarImagenesPorPublicacion(int idPublicacion) {
         List<ImagenProductoDomainModel> response=new ArrayList<>();
-        crudRepository.findByPublicacion_idPublicacion((long) idPublicacion).iterator().forEachRemaining(
+        crudRepository.findByPublicacion_IdPublicacion((long) idPublicacion).iterator().forEachRemaining(
                 (i)->response.add(
                         mapper.toDomainModel(i)
                 )
@@ -54,6 +54,23 @@ public class ImagenRepository implements ImagenPortOut {
                         ()->new SearchItemNotFoundException("No se ha encontrado la imagen")
                 )
         );
+    }
+
+    @Override
+    public ImagenProductoDomainModel consultarImagenPorNombre(String nombre) throws SearchItemNotFoundException {
+        return mapper.toDomainModel(
+                crudRepository.findByNombreArchivo(nombre).orElseThrow(
+                        ()->new SearchItemNotFoundException("No se encontro la imagen")
+                )
+        );
+    }
+
+    @Override
+    public boolean imagenPorNombreExiste(String nombre) throws SearchItemNotFoundException {
+        if(crudRepository.existsByNombreArchivo(nombre)){
+            return true;
+        }
+        throw new SearchItemNotFoundException("No existe la imagen");
     }
 
     @Override

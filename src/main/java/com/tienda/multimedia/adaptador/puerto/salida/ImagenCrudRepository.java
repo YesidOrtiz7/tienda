@@ -4,7 +4,10 @@ import com.tienda.multimedia.adaptador.modelo.persistencia.ImagenProductoPersist
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ImagenCrudRepository extends CrudRepository<ImagenProductoPersistenceModel, Integer> {
-    List<ImagenProductoPersistenceModel> findByPublicacion_idPublicacion(Long publicacionId);
+    List<ImagenProductoPersistenceModel> findByPublicacion_IdPublicacion(Long publicacionId);
+    Optional<ImagenProductoPersistenceModel> findByNombreArchivo(String nombre);
+    boolean existsByNombreArchivo(String nombre);
 }
