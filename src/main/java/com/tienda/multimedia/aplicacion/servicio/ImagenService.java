@@ -2,9 +2,14 @@ package com.tienda.multimedia.aplicacion.servicio;
 
 import com.tienda.exceptionHandler.excepciones.ItemAlreadyExistException;
 import com.tienda.exceptionHandler.excepciones.SearchItemNotFoundException;
+import com.tienda.multimedia.adaptador.puerto.salida.OrdenImagenPrincipalRepository;
 import com.tienda.multimedia.aplicacion.puerto.entrada.ImagenPortIn;
 import com.tienda.multimedia.aplicacion.puerto.salida.ImagenPortOut;
+import com.tienda.multimedia.aplicacion.puerto.salida.OrdenImagen_Principal;
 import com.tienda.multimedia.domino.ImagenProductoDomainModel;
+import com.tienda.multimedia.domino.ordenImagen.ImagenDataDomainModel;
+import com.tienda.multimedia.domino.ordenImagen.ImagenOrdenDomainModel;
+import com.tienda.publicaciones.aplicacion.puerto.salida.PublicacionPortOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -23,6 +28,8 @@ import java.util.List;
 @Service
 public class ImagenService implements ImagenPortIn {
     private ImagenPortOut repository;
+    private OrdenImagen_Principal ordenImagen_Principal;
+    private PublicacionPortOut publicacionRepository;
 
     @Value("${file.upload-dir}")
     private String uploadDir;
@@ -33,6 +40,15 @@ public class ImagenService implements ImagenPortIn {
         this.repository = repository;
     }
 
+    @Autowired
+    public void setOrdenImagen_Principal(OrdenImagen_Principal ordenImagen_Principal) {
+        this.ordenImagen_Principal = ordenImagen_Principal;
+    }
+
+    @Autowired
+    public void setPublicacionRepository(PublicacionPortOut publicacionRepository) {
+        this.publicacionRepository = publicacionRepository;
+    }
     /*-----------------------------------------------------------------------*/
 
     @Override
@@ -112,5 +128,28 @@ public class ImagenService implements ImagenPortIn {
     @Override
     public boolean imagenExiste(int idImagen) {
         return repository.imagenExiste(idImagen);
+    }
+
+    @Override
+    public boolean actualizarOrden(ImagenOrdenDomainModel imagenes) throws SearchItemNotFoundException {
+        if (!publicacionRepository.existePublicacion(imagenes.getIdPublicacion())){
+            throw new SearchItemNotFoundException("No existe la publicacion");
+        }
+
+        // actualizar el orden de cada imagen
+        List<ImagenDataDomainModel> listaImagenes=imagenes.getImagenDataList();
+        for(ImagenDataDomainModel img:listaImagenes){
+            ordenImagen_Principal.actualizarOrden(img.getId(),img.getOrden());
+        }
+
+        // limpiar imagen principal
+        ordenImagen_Principal.limpiarPrincipal(imagenes.getIdPublicacion());
+
+        // buscar cual es la imagen principal en la lista y setearla
+        listaImagenes.stream()
+                .filter(ImagenDataDomainModel::isPrincipal)
+                .findFirst()
+                .ifPresent(img->ordenImagen_Principal.setPrincipal(img.getId()));
+        return true;
     }
 }

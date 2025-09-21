@@ -11,7 +11,9 @@ import org.mapstruct.Mappings;
 public interface MapperControllerToDomainImagen {
     @Mappings({
             @Mapping(source = "id", target = "id"),
-            @Mapping(source = "nombreArchivo", target = "nombreArchivo")
+            @Mapping(source = "nombreArchivo", target = "nombreArchivo"),
+            @Mapping(source = "principal", target = "principal"),
+            @Mapping(source = "orden", target = "orden")
     })
     ImagenProductoControllerModel toControllerModel(ImagenProductoDomainModel domainModel);
     @InheritInverseConfiguration

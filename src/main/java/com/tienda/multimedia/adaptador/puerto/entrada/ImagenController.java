@@ -3,14 +3,12 @@ package com.tienda.multimedia.adaptador.puerto.entrada;
 import com.tienda.exceptionHandler.excepciones.SearchItemNotFoundException;
 import com.tienda.multimedia.adaptador.modelo.controller.ImagenProductoControllerModel;
 import com.tienda.multimedia.aplicacion.puerto.entrada.ImagenPortIn;
+import com.tienda.multimedia.domino.ordenImagen.ImagenOrdenDomainModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -65,5 +63,10 @@ public class ImagenController {
         return ResponseEntity.ok()
                 .contentType(MediaType.parseMediaType(contentType))
                 .body(recurso);
+    }
+    @PostMapping("/actualizarOrden")
+    public ResponseEntity<Void> actualizarOrdenImagen(@RequestBody ImagenOrdenDomainModel imagenOrden) throws SearchItemNotFoundException{
+        service.actualizarOrden(imagenOrden);
+        return ResponseEntity.ok().build();
     }
 }

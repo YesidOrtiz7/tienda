@@ -11,6 +11,8 @@ public class ImagenProductoPersistenceModel {
     @Column(name = "id_imagen", nullable = false)
     private Long id;
     private String nombreArchivo;
+    private boolean principal=false;
+    private int orden;
     @ManyToOne
     @JoinColumn(name = "publicacion_id")
     private PublicacionPersistenceModel publicacion;
@@ -40,5 +42,21 @@ public class ImagenProductoPersistenceModel {
 
     public void setPublicacion(PublicacionPersistenceModel publicacion) {
         this.publicacion = publicacion;
+    }
+
+    public boolean isPrincipal() {
+        return principal;
+    }
+
+    public void setPrincipal(boolean principal) {
+        this.principal = principal;
+    }
+
+    public int getOrden() {
+        return orden;
+    }
+
+    public void setOrden(int orden) {
+        this.orden = orden;
     }
 }

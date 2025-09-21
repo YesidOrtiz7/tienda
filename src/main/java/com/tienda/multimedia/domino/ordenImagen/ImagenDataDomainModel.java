@@ -1,0 +1,40 @@
+package com.tienda.multimedia.domino.ordenImagen;
+
+public class ImagenDataDomainModel {
+    private int id;
+    private int orden;
+    private boolean principal;
+
+    public ImagenDataDomainModel(int id, int orden, boolean principal) {
+        this.id = id;
+        this.orden = orden;
+        this.principal = principal;
+    }
+
+    public ImagenDataDomainModel() {
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getOrden() {
+        return orden;
+    }
+
+    public void setOrden(int orden) {
+        this.orden = orden;
+    }
+
+    public boolean isPrincipal() {
+        return principal;
+    }
+
+    public void setPrincipal(boolean principal) {
+        this.principal = principal;
+    }
+}

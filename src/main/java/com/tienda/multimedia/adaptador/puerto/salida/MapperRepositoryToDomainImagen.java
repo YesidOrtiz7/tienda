@@ -12,6 +12,8 @@ public interface MapperRepositoryToDomainImagen {
     @Mappings({
             @Mapping(source = "id",target = "id"),
             @Mapping(source = "nombreArchivo",target = "nombreArchivo"),
+            @Mapping(source = "principal",target = "principal"),
+            @Mapping(source = "orden",target = "orden"),
             @Mapping(source = "publicacion.idPublicacion", target = "idPublicacion")
     })
     ImagenProductoDomainModel toDomainModel(ImagenProductoPersistenceModel persistenceModel);

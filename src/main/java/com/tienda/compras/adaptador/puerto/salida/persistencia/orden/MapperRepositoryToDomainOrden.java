@@ -19,5 +19,6 @@ public interface MapperRepositoryToDomainOrden {
     })
     OrdenEntity toPersistenceModel(Orden domainModel);
     @InheritInverseConfiguration
+    @Mapping(target = "compra",ignore = true)
     Orden toDomainModel(OrdenEntity persistenceModel);
 }

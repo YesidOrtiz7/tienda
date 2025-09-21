@@ -42,7 +42,7 @@ public class AdminController {
         return ResponseEntity.ok(this.service.obtenerUsuarioPorId(idRequest.getId()));
     }
     @PostMapping("/registro")
-    public ResponseEntity<QrCodeUrl> registrarNuevoAdministrador(CrearUsuario_ControllerModel admin)throws InvalidInputException, ItemAlreadyExistException {
+    public ResponseEntity<QrCodeUrl> registrarNuevoAdministrador(@RequestBody CrearUsuario_ControllerModel admin)throws InvalidInputException, ItemAlreadyExistException {
         String qrCodeUrl=service.registrarAdmin(
                 mapperCrearUsuario.toDomainModel(admin)
         );

@@ -3,6 +3,8 @@ package com.tienda.multimedia.domino;
 public class ImagenProductoDomainModel {
     private int id;
     private String nombreArchivo;
+    private boolean principal;
+    private int orden;
     private int idPublicacion;
 
     public ImagenProductoDomainModel() {
@@ -46,5 +48,21 @@ public class ImagenProductoDomainModel {
 
     public void setIdPublicacion(int idPublicacion) {
         this.idPublicacion = idPublicacion;
+    }
+
+    public boolean isPrincipal() {
+        return principal;
+    }
+
+    public void setPrincipal(boolean principal) {
+        this.principal = principal;
+    }
+
+    public int getOrden() {
+        return orden;
+    }
+
+    public void setOrden(int orden) {
+        this.orden = orden;
     }
 }
